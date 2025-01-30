@@ -1,0 +1,2 @@
+class DonatePet < ApplicationRecord
+end
