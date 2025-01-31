@@ -59,3 +59,5 @@ end
 gem "jsbundling-rails", "~> 1.3"
 
 gem "devise", "~> 4.9"
+
+gem "discard", "~> 1.4"

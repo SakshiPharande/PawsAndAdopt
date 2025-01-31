@@ -1,2 +1,33 @@
-<h1>Admin::Dashboards#index</h1>
-<p>Find me in app/views/admin/dashboards/index.html.erb</p>
+<div class="container mt-4">
+    <h1 class="text-center my-4"><%= @users.present? ? "true" : "false" %></h1>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone No</th>
+            <th>Action</th>
+            </tr>
+        </thead>
+      <tbody>
+        <% if @active_users.present? %>
+        <% @active_users.each do |user| %>
+            <tr>
+                <td><%= user.id %></td>
+                <td><%= user.first_name %></td>
+                <td><%= user.last_name %></td>
+                <td><%= user.email %></td>
+                <td><%= user.phone_no %></td>
+            </tr>
+        <% end %>
+        <% else %>
+            <tr>
+            <td colspan="6" class="text-center">No users found.</td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+  </div>
