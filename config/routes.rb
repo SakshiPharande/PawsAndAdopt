@@ -36,7 +36,8 @@ Rails.application.routes.draw do
   # API routes for user profile management (JSON data)
   namespace :api do
     namespace :v1 do
-      resources :users, only: [ :index, :show, :edit, :update, :destroy ]
+      post "login", to: "auth#login"  # Login API
+      resources :users, only: [ :show, :edit, :update, :destroy ]
     end
   end
 end

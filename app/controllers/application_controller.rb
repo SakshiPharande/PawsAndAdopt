@@ -1,13 +1,22 @@
 class ApplicationController < ActionController::Base
-  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
+
+  protect_from_forgery with: :exception
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
+
 
   def after_sign_in_path_for(resource)
     if resource.admin?
-      admin_dashboard_path  # Redirects admin to the admin dashboard
-      # else
-      #   user_dashboard_path  # Redirects regular users to the user dashboard
+      admin_dashboard_path
+    end
+  end
+
+  private
+
+  def skip_csrf_for_api_requests
+    if request.format.json? || request.path.start_with?("/api/")
+      self.class.skip_forgery_protection
     end
   end
 end
