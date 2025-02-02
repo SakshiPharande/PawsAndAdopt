@@ -26,10 +26,15 @@ Rails.application.routes.draw do
     get "dashboard", to: "dashboards#index", as: "dashboard"  # Correct route for admin dashboard
     resources :users, only: [ :index, :show ] do
       member do
-        patch :discard  # Route for soft delete
+        patch :discard
       end
     end
-    resource :admin_profile, only: [ :show, :update ]
+    resources :categories, only: [ :index, :new, :create, :edit, :update ] do
+      member do
+        patch :discard
+      end
+    end
+    resource :profile, only: [ :show, :update ]
   end
 
   # User routes (Restricted to normal users)
