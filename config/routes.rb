@@ -24,8 +24,12 @@ Rails.application.routes.draw do
   # Admin routes (Restricted to admin users)
   namespace :admin do
     get "dashboard", to: "dashboards#index", as: "dashboard"  # Correct route for admin dashboard
-    resources :users, only: [ :index, :show, :destroy ]  # Admin can manage users
-    resource :admin_profile, only: [ :show, :update ]  # Admin profile management
+    resources :users, only: [ :index, :show ] do
+      member do
+        patch :discard  # Route for soft delete
+      end
+    end
+    resource :admin_profile, only: [ :show, :update ]
   end
 
   # User routes (Restricted to normal users)

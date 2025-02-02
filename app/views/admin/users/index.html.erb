@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <h1 class="text-center my-4"><%= @users.present? ? "true" : "false" %></h1>
+    <h1 class="text-center my-4">Users List</h1>
 
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
@@ -13,14 +13,26 @@
             </tr>
         </thead>
       <tbody>
-        <% if @active_users.present? %>
-        <% @active_users.each do |user| %>
+        <% if @users.present? %>
+        <% @users.each do |user| %>
             <tr>
                 <td><%= user.id %></td>
                 <td><%= user.first_name %></td>
                 <td><%= user.last_name %></td>
                 <td><%= user.email %></td>
                 <td><%= user.phone_no %></td>
+                <td>
+              <!-- View Icon -->
+           <%= link_to admin_user_path(user), class: "text-decoration-none" do %>
+              <i class="bi bi-eye text-success me-3" title="View User"></i>
+            <% end %>
+            <!-- Soft Delete Icon -->
+            <%= link_to discard_admin_user_path(user), method: :patch, data: { 
+                turbo_method: :patch, confirm: "Are you sure you want to discard this user?" 
+                }, class: "text-danger", title: "Soft Delete User", rel: "nofollow" do %>
+            <i class="bi bi-trash"></i>
+            <% end %>
+            </td>
             </tr>
         <% end %>
         <% else %>
