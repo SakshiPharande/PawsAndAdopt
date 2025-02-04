@@ -68,6 +68,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.string "pet_image_url"
     t.integer "breed_id", null: false
     t.integer "category_id", null: false
+    t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["breed_id"], name: "index_pets_on_breed_id"

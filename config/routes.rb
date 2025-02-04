@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   # Root path (Redirect to sign-in if not authenticated)
   unauthenticated do
-    root to: "home#index", as: :unauthenticated_root
+    root to: "devise/sessions#new"
   end
 
   # Define the authenticated root path (Redirect based on role)
@@ -39,8 +39,14 @@ Rails.application.routes.draw do
         patch :discard
       end
     end
+    resources :pets, only: [ :index, :new, :create, :edit, :update ] do
+      member do
+        patch :discard
+      end
+    end
     resource :profile, only: [ :show, :update ]
   end
+
 
   # User routes (Restricted to normal users)
   namespace :user do

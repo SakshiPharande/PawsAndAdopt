@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Add Pet</h2>
+  
+  <%= form_with model: @pet, url: admin_pets_path, method: :post, local: true, class: "needs-validation" do |f| %>  
+  <div class="mb-3">
+    <%= f.label :age, "Age", class: "form-label" %>
+    <%= f.number_field :age, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :gender, "Gender", class: "form-label" %>
+    <%= f.select :gender, [["Male", 0], ["Female", 1],["UnKnown", 2]], { prompt: "Select Gender" }, class: "form-select" %>
+  </div>
+
+<div class="mb-3">
+    <%= f.label :category_id, "Category", class: "form-label" %>
+    <%= f.collection_select :category_id, load_categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+</div>
+
+  <div class="mb-3">
+    <%= f.label :breed_id, "Breed", class: "form-label" %>
+    <%= f.collection_select :breed_id, load_breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3 text-center">
+    <%= f.submit "Add Pet", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
+</div>

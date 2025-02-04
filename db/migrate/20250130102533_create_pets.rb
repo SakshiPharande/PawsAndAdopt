@@ -12,7 +12,7 @@ class CreatePets < ActiveRecord::Migration[7.2]
       t.string  :pet_image_url
       t.references :breed, null: false, foreign_key: true
       t.references :category, null: false, foreign_key: true
-
+      t.datetime :discarded_at
       t.timestamps
     end
   end
