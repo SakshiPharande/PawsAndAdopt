@@ -14,6 +14,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
   create_table "breeds", force: :cascade do |t|
     t.string "breed_name", null: false
     t.integer "category_id", null: false
+    t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_breeds_on_category_id"

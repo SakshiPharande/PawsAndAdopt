@@ -34,6 +34,11 @@ Rails.application.routes.draw do
         patch :discard
       end
     end
+    resources :breeds, only: [ :index, :new, :create, :edit, :update ] do
+      member do
+        patch :discard
+      end
+    end
     resource :profile, only: [ :show, :update ]
   end
 

@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Edit Breed</h2>
+
+    <%= form_with model: @breed, url: admin_breed_path(@breed), method: :patch, local: true, class: "needs-validation" do |f| %>
+    <div class="mb-3">
+      <%= f.label :breed_name, "Breed Name", class: "form-label" %>
+      <%= f.text_field :breed_name, class: "form-control", required: true %>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :category_id, "Category", class: "form-label" %>
+      <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+    </div>
+
+    <div class="text-center">
+      <%= f.submit "Update Breed", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
