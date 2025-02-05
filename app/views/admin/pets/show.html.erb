@@ -1,0 +1,38 @@
+<div class="container mt-4">
+    <h1 class="text-center my-4">Pet Details</h1>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Category Name</th>
+                <th>Breed Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Status</th>
+                <th>Temperament</th>
+                <th>Vaccination Status</th>
+                <th>Medical History</th>
+                <th>Recommended Food</th>
+                <th>Common Health Issues</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><%= @pet.id %></td>
+                <td><%= @pet.category.category_name if @pet.category %></td>
+                <td><%= @pet.breed.breed_name if @pet.breed %></td>
+                <td><%= @pet.age %></td>
+                <td><%= @pet.gender %></td>
+                <td><%= @pet.status %></td>
+                <td><%= @pet.temperament %></td>
+                <td>
+                    <%= @pet.vaccination_status ? "Vaccinated" : "Not Vaccinated" %>
+                </td>
+                <td><%= @pet.medical_history %></td>
+                <td><%= @pet.recommended_food %></td>
+                <td><%= @pet.common_health_issues %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

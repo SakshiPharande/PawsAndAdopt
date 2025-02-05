@@ -3,27 +3,15 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-
-
   # Devise routes for authentication
   devise_for :users
 
-  # Root path (Redirect to sign-in if not authenticated)
-  unauthenticated do
-    root to: "devise/sessions#new"
-  end
-
-  # Define the authenticated root path (Redirect based on role)
-  authenticated :user do
-    root to: "dashboards#show", as: :authenticated_root
-  end
-
-  # Home page with Admin & User sign-in options
-  get "home", to: "home#index"
+  # Set root to admin dashboard
+  root to: "admin/dashboards#index"
 
   # Admin routes (Restricted to admin users)
   namespace :admin do
-    get "dashboard", to: "dashboards#index", as: "dashboard"  # Correct route for admin dashboard
+    get "dashboard", to: "dashboards#index", as: "dashboard"
     resources :users, only: [ :index, :show ] do
       member do
         patch :discard
@@ -39,7 +27,7 @@ Rails.application.routes.draw do
         patch :discard
       end
     end
-    resources :pets, only: [ :index, :new, :create, :edit, :update ] do
+    resources :pets, only: [ :index, :show, :new, :create, :edit, :update ] do
       member do
         patch :discard
       end
@@ -47,10 +35,9 @@ Rails.application.routes.draw do
     resource :profile, only: [ :show, :update ]
   end
 
-
   # User routes (Restricted to normal users)
   namespace :user do
-    get "dashboard", to: "dashboards#show", as: "dashboard"  # Correct route for user dashboard
+    get "dashboard", to: "dashboards#show", as: "dashboard"
   end
 
   # API routes for user profile management (JSON data)

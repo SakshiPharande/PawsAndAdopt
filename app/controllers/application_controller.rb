@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   private
 
   def skip_csrf_for_api_requests
