@@ -17,14 +17,27 @@ class Admin::PetsController < ApplicationController
     if @pet.save
       redirect_to admin_pets_path, notice: "Pet successfully added."
     else
-      load_categories
-      load_breeds
+      load_categories_and_breeds
       flash.now[:alert] = @pet.errors.full_messages.to_sentence
-      Rails.logger.debug @pet.errors.full_messages # Log errors for debugging
       render :new
     end
   end
 
+  def edit
+    @pet = Pet.find(params[:id])
+    load_categories_and_breeds
+  end
+
+  def update
+    @pet = Pet.find(params[:id])
+    if @pet.update(pet_params)
+      redirect_to admin_pets_path, notice: "Pet successfully updated."
+    else
+      load_categories_and_breeds
+      flash.now[:alert] = @pet.errors.full_messages.to_sentence
+      render :edit
+    end
+  end
 
 
   def discard
@@ -51,6 +64,9 @@ class Admin::PetsController < ApplicationController
   def pet_params
     params.require(:pet).permit(:age, :gender, :temperament, :vaccination_status,
                                 :medical_history, :recommended_food, :common_health_issues,
-                                :status, :breed_id, :category_id)
+                                :status, :breed_id, :category_id).tap do |pet_params|
+      pet_params[:gender] = pet_params[:gender].to_i if pet_params[:gender].present?
+      pet_params[:status] = pet_params[:status].to_i if pet_params[:status].present?
+    end
   end
 end

@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Edit Pet</h2>
+
+  <%= form_with model: @pet, url: admin_pet_path(@pet), method: :patch, local: true, class: "needs-validation" do |f| %>
+  
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= f.label :category_id, "Category", class: "form-label" %>
+        <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :breed_id, "Breed", class: "form-label" %>
+        <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select" %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= f.label :age, "Age", class: "form-label" %>
+        <%= f.number_field :age, class: "form-control", required: true %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :temperament, "Temperament", class: "form-label" %>
+        <%= f.text_field :temperament, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row mb-3">     
+      <div class="col-md-6">
+          <%= f.label :gender, "Gender", class: "form-label" %>
+          <%= f.select :gender, [["Male", 1], ["Female", 2], ["Unknown", 0]], { prompt: "Select Gender" }, class: "form-select" %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :status, "Status", class: "form-label" %>
+        <%= f.select :status, [["Available",0 ], ["Unavailable", 1]], { prompt: "Select Status" }, class: "form-select" %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= f.label :medical_history, "Medical History", class: "form-label" %>
+        <%= f.text_area :medical_history, class: "form-control" %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :recommended_food, "Recommended Food", class: "form-label" %>
+        <%= f.text_area :recommended_food, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <%= f.label :common_health_issues, "Common Health Issues", class: "form-label" %>
+        <%= f.text_area :common_health_issues, class: "form-control" %>
+      </div>
+
+      <div class="col-md-6">
+        <%= f.label :vaccination_status, "Vaccination Status", class: "form-label" %>
+        <%= f.check_box :vaccination_status, class: "form-check-input" %>
+        <%= f.label :vaccination_status, "Vaccinated", class: "form-check-label" %>
+      </div>
+    </div>
+
+    <div class="mb-3 text-center">
+      <%= f.submit "Update Pet", class: "btn btn-success" %>
+    </div>
+
+  <% end %>
+</div>
