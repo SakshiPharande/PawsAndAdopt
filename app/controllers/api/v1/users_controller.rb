@@ -4,7 +4,15 @@ class Api::V1::UsersController < Api::V1::BaseController
     render json: @current_user, status: :ok
    end
 
-  # PUT /api/v1/users/profile
+  def create
+      @user = User.new(user_params)
+    if @user.save
+      render json: { status: "SUCCESS", message: "Account created successfully", data: @user }, status: :created
+    else
+      render json: { status: "ERROR", message: "Failed to create Account", errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   def update
     if @current_user.update(user_params)
       render json: @current_user, status: :ok
