@@ -1,0 +1,30 @@
+<tr id="donate_pet_<%= donate_pet.id %>">
+  <td><%= donate_pet.id %></td>
+  <td><%= donate_pet.user.first_name %> <%= donate_pet.user.last_name %></td>
+  <td><%= donate_pet.user.email %></td>
+  <td><%= donate_pet.category_name %></td>
+  <td><%= donate_pet.breed_name %></td>
+  <td><%= donate_pet.pet_gender %></td>
+  <td>
+    <% if donate_pet.pet.pet_image_url.present? %>
+      <img src="<%= donate_pet.pet.pet_image_url %>" width="80" height="80" alt="Pet Image">
+    <% else %>
+      No Image
+    <% end %>
+  </td>
+  <td><%= donate_pet.pet_donate_date.strftime("%d-%m-%Y") if donate_pet.pet_donate_date %></td>
+  <td><%= donate_pet.updated_at.strftime("%d-%m-%Y") %></td>
+  <td>
+    <% status_class = donate_pet.pending? ? 'bg-warning text-dark' : (donate_pet.accepted? ? 'bg-success text-white' : 'bg-danger text-white') %>
+    <span class="badge <%= status_class %>">
+      <%= donate_pet.status.capitalize %>
+    </span>
+  </td>
+  <td>
+    <div class="d-flex gap-2">
+      <%= link_to "View", admin_donate_pet_path(donate_pet), class: "btn btn-primary btn-sm" %>
+      <%= link_to "Accept", admin_donate_pet_path(donate_pet, status: :accepted), method: :patch, class: "btn btn-success btn-sm", data: { turbo_method: :patch, turbo_frame: "donate_pet_#{donate_pet.id}" } %>
+      <%= link_to "Reject", admin_donate_pet_path(donate_pet, status: :rejected), method: :patch, class: "btn btn-danger btn-sm", data: { turbo_method: :patch, turbo_frame: "donate_pet_#{donate_pet.id}" } %>
+    </div>
+  </td>
+</tr>

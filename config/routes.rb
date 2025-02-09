@@ -32,6 +32,8 @@ Rails.application.routes.draw do
         patch :discard
       end
     end
+    resources :donate_pets, only: [ :index, :show, :update ] do
+    end
     resource :profile, only: [ :show, :update ]
   end
 
