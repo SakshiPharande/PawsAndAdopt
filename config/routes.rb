@@ -34,6 +34,8 @@ Rails.application.routes.draw do
     end
     resources :donate_pets, only: [ :index, :show, :update ] do
     end
+    resources :adopt_pets, only: [ :index, :show, :update ] do
+    end
     resource :profile, only: [ :show, :update ]
   end
 

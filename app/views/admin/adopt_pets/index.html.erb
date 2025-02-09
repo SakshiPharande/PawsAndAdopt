@@ -1,0 +1,36 @@
+<div class="container mt-4">
+    <h1 class="text-center my-4">Adoption Pet Requests</h1>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>User Name</th>
+                    <th>User Email</th>
+                    <th>Category</th>
+                    <th>Breed</th>
+                    <th>Pet Gender</th>
+                    <th>Pet Image</th>
+                    <th>Expected Adoption Date</th>
+                    <th>Actual Adoption Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if @adopt_pets.present? %>
+                    <% @adopt_pets.each do |adopt_pet| %>
+                    <turbo-frame id="adopt_pet_<%= adopt_pet.id %>">
+                        <%= render partial: "admin/adopt_pets/adopt_pet", locals: { adopt_pet: adopt_pet } %>
+                    </turbo-frame>
+                <% end %>
+                <% else %>
+                    <tr>
+                        <td colspan="11" class="text-center">No Adoption requests found.</td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+</div>

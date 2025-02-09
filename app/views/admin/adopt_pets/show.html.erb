@@ -1,0 +1,66 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white text-center py-1">
+          <h3 class="mb-0">Adoption Request Details</h3>
+        </div>
+
+        <div class="card-body p-4">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="fw-bold">Adoption ID:</p>
+              <p class="text-muted"><%= @adopt_pet.id %></p>
+            </div>
+            <div class="col-md-6">
+              <p class="fw-bold">Status:</p>
+              <% status_class = @adopt_pet.pending? ? 'badge bg-warning' : (@adopt_pet.accepted? ? 'badge bg-success' : 'badge bg-danger') %>
+              <span class="<%= status_class %> px-3 py-2"><%= @adopt_pet.status.capitalize %></span>
+            </div>
+          </div>
+
+          <hr>
+
+          <h5 class="text-primary mb-3">User Details</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Name:</strong> <%= @adopt_pet.user.first_name %> <%= @adopt_pet.user.last_name %></p>
+              <p><strong>Email:</strong> <%= @adopt_pet.user.email %></p>
+              <p><strong>Phone No:</strong> <%= @adopt_pet.phone_no %></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Address:</strong> <%= @adopt_pet.address %></p>
+            </div>
+          </div>
+
+          <hr>
+
+          <h5 class="text-primary mb-3">Pet Details</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Category:</strong> <%= @adopt_pet.category_name %></p>
+              <p><strong>Breed:</strong> <%= @adopt_pet.breed_name %></p>
+              <p><strong>Gender:</strong> <%= @adopt_pet.pet_gender %></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Expected Donation Date:</strong> <%= @adopt_pet.expected_adoption_date.strftime("%d-%m-%Y") if @adopt_pet.expected_adoption_date %></p>
+              <p><strong>Actual Donation Date:</strong> <%= @adopt_pet.actual_adoption_date.strftime("%d-%m-%Y") if @adopt_pet.actual_adoption_date%></p>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <% if @adopt_pet.pet.pet_image_url.present? %>
+              <img src="<%= @adopt_pet.pet.pet_image_url %>" class="img-fluid rounded shadow" alt="Pet Image" style="max-width: 250px; max-height: 250px;">
+            <% else %>
+              <p class="text-muted">No Image Available</p>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="card-footer text-center bg-light">
+          <%= link_to "Back to Requests", admin_adopt_pets_path, class: "btn btn-secondary px-4 py-2" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

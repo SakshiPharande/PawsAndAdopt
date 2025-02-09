@@ -15,14 +15,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.string "email", null: false
     t.string "address", null: false
     t.string "phone_no", null: false
-    t.datetime "adoption_date"
+    t.datetime "expected_adoption_date"
+    t.datetime "actual_adoption_date"
     t.integer "status", default: 0
     t.integer "user_id", null: false
     t.integer "pet_id", null: false
-    t.integer "breed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["breed_id"], name: "index_adopt_pets_on_breed_id"
     t.index ["pet_id"], name: "index_adopt_pets_on_pet_id"
     t.index ["user_id"], name: "index_adopt_pets_on_user_id"
   end
@@ -99,7 +98,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "adopt_pets", "breeds"
   add_foreign_key "adopt_pets", "pets"
   add_foreign_key "adopt_pets", "users"
   add_foreign_key "breeds", "categories"
