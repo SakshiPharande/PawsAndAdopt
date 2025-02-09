@@ -1,16 +1,25 @@
 <!-- Sticky Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow" style="height: 70px;">
   <div class="container-fluid">
     <!-- Project Name with Icon -->
-    <a class="navbar-brand fw-bold d-flex align-items-center" href="#" style="transition: color 0.3s;">
-      <i class="fa-solid fa-paw me-3"></i> Paws&Adopt
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="#" style="transition: color 0.3s; font-size: 1.5rem;">
+      <i class="fa-solid fa-paw me-2"></i> Paws&Adopt
     </a>
+
+    <!-- Search Bar -->
+   <!-- <form class="d-flex mx-auto" action="" method="get" style="width: 20%;">
+      <input class="form-control me-2" type="search" name="query" placeholder="Search pets..." aria-label="Search">
+      <button class="btn btn-light" type="submit">
+        <i class="fa-solid fa-search"></i>
+      </button>
+    </form> -->
 
     <!-- Responsive Toggle Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
@@ -19,10 +28,6 @@
             <a class="nav-link fw-semibold" href="#" style="transition: color 0.3s;">
               <i class="fa-solid fa-user-circle me-1"></i> <%= current_user.email %>
             </a>
-          </li>
-          <!-- Sign Out Button -->
-          <li class="nav-item">
-            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "btn btn-danger ms-2 fw-semibold px-3 shadow-sm" %>
           </li>
         <% else %>
           <!-- Sign In Button -->
