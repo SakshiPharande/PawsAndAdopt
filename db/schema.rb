@@ -11,6 +11,22 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
+  create_table "adopt_pets", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "address", null: false
+    t.string "phone_no", null: false
+    t.datetime "adoption_date"
+    t.integer "status", default: 0
+    t.integer "user_id", null: false
+    t.integer "pet_id", null: false
+    t.integer "breed_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["breed_id"], name: "index_adopt_pets_on_breed_id"
+    t.index ["pet_id"], name: "index_adopt_pets_on_pet_id"
+    t.index ["user_id"], name: "index_adopt_pets_on_user_id"
+  end
+
   create_table "breeds", force: :cascade do |t|
     t.string "breed_name", null: false
     t.integer "category_id", null: false
@@ -27,23 +43,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "pet_adopt_requests", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "address", null: false
-    t.string "phone_no", null: false
-    t.datetime "adoption_date"
-    t.integer "status", default: 0
-    t.integer "user_id", null: false
-    t.integer "pet_id", null: false
-    t.integer "breed_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["breed_id"], name: "index_pet_adopt_requests_on_breed_id"
-    t.index ["pet_id"], name: "index_pet_adopt_requests_on_pet_id"
-    t.index ["user_id"], name: "index_pet_adopt_requests_on_user_id"
-  end
-
-  create_table "pet_donate_requests", force: :cascade do |t|
+  create_table "donate_pets", force: :cascade do |t|
     t.string "address", null: false
     t.string "phone_no", null: false
     t.integer "status", default: 0
@@ -52,8 +52,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.integer "pet_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pet_id"], name: "index_pet_donate_requests_on_pet_id"
-    t.index ["user_id"], name: "index_pet_donate_requests_on_user_id"
+    t.index ["pet_id"], name: "index_donate_pets_on_pet_id"
+    t.index ["user_id"], name: "index_donate_pets_on_user_id"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -99,12 +99,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_31_042634) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "adopt_pets", "breeds"
+  add_foreign_key "adopt_pets", "pets"
+  add_foreign_key "adopt_pets", "users"
   add_foreign_key "breeds", "categories"
-  add_foreign_key "pet_adopt_requests", "breeds"
-  add_foreign_key "pet_adopt_requests", "pets"
-  add_foreign_key "pet_adopt_requests", "users"
-  add_foreign_key "pet_donate_requests", "pets"
-  add_foreign_key "pet_donate_requests", "users"
+  add_foreign_key "donate_pets", "pets"
+  add_foreign_key "donate_pets", "users"
   add_foreign_key "pets", "breeds"
   add_foreign_key "pets", "categories"
 end

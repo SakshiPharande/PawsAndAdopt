@@ -1,6 +1,6 @@
 class CreateDonatePets < ActiveRecord::Migration[7.2]
   def change
-    create_table :pet_donate_requests do |t|
+    create_table :donate_pets do |t|
       t.string :address, null: false
       t.string :phone_no, null: false
       t.integer :status, default: 0
