@@ -48,7 +48,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "login", to: "auth#login"  # Login API
-      resources :users, only: [ :show, :edit, :update, :destroy ]
+      resources :users, only: [ :show, :create, :update, :destroy ]
     end
   end
 end

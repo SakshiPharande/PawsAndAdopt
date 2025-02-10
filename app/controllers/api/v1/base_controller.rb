@@ -2,8 +2,8 @@
 class Api::V1::BaseController < ActionController::API
   include JwtHelper
 
+  # skip_before_action :verify_authenticity_token  # Disable CSRF for API requests
   before_action :authenticate_user
-  skip_before_action :verify_authenticity_token  # Disable CSRF for API requests
 
   private
 

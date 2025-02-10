@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::BaseController
    end
 
   def create
-      @user = User.new(user_params)
+    @user = User.new(user_params)
     if @user.save
       render json: { status: "SUCCESS", message: "Account created successfully", data: @user }, status: :created
     else
@@ -24,6 +24,6 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :phone_no, :password)
+    params.require(:user).permit(:first_name, :last_name, :email, :phone_no, :password, :password_confirmation, :role)
   end
 end
