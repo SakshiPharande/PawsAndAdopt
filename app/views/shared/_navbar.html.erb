@@ -49,7 +49,22 @@
 
 <!-- Flash Messages -->
 <% flash.each do |type, message| %>
-  <div class="alert <%= flash_class(type) %> shadow-sm">
+  <div class="alert <%= flash_class(type) %> shadow-sm position-fixed top-0 start-50 translate-middle-x text-center fade show" 
+       style="max-width: 400px; z-index: 1050;">
     <%= message %>
   </div>
 <% end %>
+
+<script>
+  // Automatically fade out flash messages after 7 seconds (7000ms)
+ document.addEventListener("DOMContentLoaded", function () {
+  setTimeout(() => {
+    let flashMessages = document.querySelectorAll(".alert");
+    flashMessages.forEach(msg => {
+      msg.classList.remove("show");  // Remove Bootstrap's show class
+      msg.classList.add("fade");     // Keep fade for smooth transition
+      setTimeout(() => msg.remove(), 500); // Remove after fade-out
+    });
+  }, 6000);
+});
+</script>
