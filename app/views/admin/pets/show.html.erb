@@ -1,41 +1,56 @@
-<div class="container mt-4">
-    <h1 class="text-center my-4">Pet Details</h1>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg">
+        <!-- Carousel for Pet Images -->
+        <% if @pet.pet_images.attached? %>
+          <div id="petImageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <% @pet.pet_images.each_with_index do |image, index| %>
+                <div class="carousel-item <%= 'active' if index == 0 %>">
+                  <%= image_tag image, class: "d-block w-100", style: "height: 300px; object-fit: cover;" %>
+                </div>
+              <% end %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#petImageCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#petImageCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        <% else %>
+          <div class="text-center p-3">
+            <p class="text-muted">No images available</p>
+          </div>
+        <% end %>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Category Name</th>
-                <th>Breed Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Status</th>
-                <th>Temperament</th>
-                <th>Vaccination Status</th>
-                <th>Medical History</th>
-                <th>Recommended Food</th>
-                <th>Common Health Issues</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><%= @pet.id %></td>
-                <td><%= @pet.category.category_name if @pet.category %></td>
-                <td><%= @pet.breed.breed_name if @pet.breed %></td>
-                <td><%= @pet.age %></td>
-                <td><%= @pet.gender %></td>
-                <td><%= @pet.status %></td>
-                <td><%= @pet.temperament %></td>
-                <td>
-                    <%= @pet.vaccination_status ? "Vaccinated" : "Not Vaccinated" %>
-                </td>
-                <td><%= @pet.medical_history %></td>
-                <td><%= @pet.recommended_food %></td>
-                <td><%= @pet.common_health_issues %></td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="text-center bg-light">
+        <!-- Pet Details -->
+        <div class="card-body">
+          <h3 class="card-title text-center text-primary"><%= @pet.category.category_name if @pet.category %> - <%= @pet.breed.breed_name if @pet.breed %></h3>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Age:</strong> <%= @pet.age %> years</li>
+            <li class="list-group-item"><strong>Gender:</strong> <%= @pet.gender %></li>
+            <li class="list-group-item"><strong>Status:</strong> <%= @pet.status %></li>
+            <li class="list-group-item"><strong>Temperament:</strong> <%= @pet.temperament %></li>
+            <li class="list-group-item"><strong>Vaccination Status:</strong> 
+              <span class="badge <%= @pet.vaccination_status ? 'bg-success' : 'bg-danger' %>">
+                <%= @pet.vaccination_status ? "Vaccinated" : "Not Vaccinated" %>
+              </span>
+            </li>
+            <li class="list-group-item"><strong>Medical History:</strong> <%= @pet.medical_history.presence || "No records" %></li>
+            <li class="list-group-item"><strong>Recommended Food:</strong> <%= @pet.recommended_food.presence || "Not specified" %></li>
+            <li class="list-group-item"><strong>Common Health Issues:</strong> <%= @pet.common_health_issues.presence || "No issues reported" %></li>
+          </ul>
+        </div>
+
+        <!-- Back Button -->
+        <div class="card-footer text-center bg-light">
           <%= link_to "Back to Requests", admin_pets_path, class: "btn btn-secondary px-4 py-2" %>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
