@@ -6,14 +6,6 @@
       <i class="fa-solid fa-paw me-2"></i> Paws&Adopt
     </a>
 
-    <!-- Search Bar -->
-   <!-- <form class="d-flex mx-auto" action="" method="get" style="width: 20%;">
-      <input class="form-control me-2" type="search" name="query" placeholder="Search pets..." aria-label="Search">
-      <button class="btn btn-light" type="submit">
-        <i class="fa-solid fa-search"></i>
-      </button>
-    </form> -->
-
     <!-- Responsive Toggle Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -23,11 +15,26 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <% if user_signed_in? %>
-          <!-- User Profile -->
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="#" style="transition: color 0.3s;">
-              <i class="fa-solid fa-user-circle me-1"></i> <%= current_user.email %>
+          <!-- Admin Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <%= image_tag(current_user.profile_image_url, 
+                  alt: "Profile Picture", class: "rounded-circle", width: 40, height: 40, style: "object-fit: cover;") %>
+              <span class="ms-2 fw-semibold"><%= current_user.email %></span>
             </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="adminDropdown">
+              <li>
+                <a class="dropdown-item d-flex align-items-center" href="#">
+                  <i class="fa-solid fa-user-edit me-2"></i> Update Profile
+                </a>
+              </li>
+              <li>
+                <%= button_to destroy_user_session_path, method: :delete, class: "dropdown-item text-danger d-flex align-items-center" do %>
+                  <i class="fa-solid fa-sign-out-alt me-2"></i> Logout
+                <% end %>
+              </li>
+
+            </ul>
           </li>
         <% else %>
           <!-- Sign In Button -->
