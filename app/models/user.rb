@@ -5,7 +5,18 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-         include Discard::Model
-         validates :email, presence: true, uniqueness: true
-         enum role: { user: 0, admin: 1, super_admin: 2 }
+  validates :email, presence: true, uniqueness: true
+  enum role: { user: 0, admin: 1, super_admin: 2 }
+
+  # Attach profile image using Active Storage
+  has_one_attached :profile_image
+
+  # Method to return profile image URL (with default)
+  def profile_image_url
+      if profile_image.attached?
+        Rails.application.routes.url_helpers.rails_blob_url(profile_image, only_path: true)
+      else
+        ActionController::Base.helpers.asset_path("default-male-profile-pic.png")
+      end
+  end
 end
