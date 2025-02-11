@@ -23,7 +23,7 @@ class User < ApplicationRecord
         when "admin"
           "default-admin-profile-pic.jpg"
         else
-          "default-male-profile-pic.png"
+          "default-user-profile-pic.png"
         end
 
       ActionController::Base.helpers.asset_path(default_image)
