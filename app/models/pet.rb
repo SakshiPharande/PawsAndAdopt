@@ -15,4 +15,14 @@ class Pet < ApplicationRecord
   def pet_images_urls
     pet_images.map { |image| Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true) }
   end
+
+  # Fetch category name
+  def category_name
+    category&.category_name || "Unknown Category"
+  end
+
+  # Fetch breed name
+  def breed_name
+    breed&.breed_name || "Unknown Breed"
+  end
 end

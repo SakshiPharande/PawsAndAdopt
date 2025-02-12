@@ -3,14 +3,23 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
   skip_before_action :verify_authenticity_token
-  before_action :authenticate_user!
 
+  # Use Devise authentication for admin  only
+  before_action :authenticate_user!, unless: :api_request?
+
+
+  helper_method :api_request?
+
+  rescue_from Devise::MissingWarden, with: :unauthorized_access
+  rescue_from ActionController::InvalidAuthenticityToken, with: :unauthorized_access
 
   def after_sign_in_path_for(resource)
     if resource.super_admin?
       admin_dashboard_path  # Both admin & super admin use the same dashboard
     elsif resource.admin?
       admin_dashboard_path
+    elsif resource.user?
+      api_v1_dashboard_path
     else
       root_path
     end
@@ -23,5 +32,9 @@ class ApplicationController < ActionController::Base
     if request.format.json? || request.path.start_with?("/api/")
       self.class.skip_forgery_protection
     end
+  end
+
+  def api_request?
+    request.format.json? || request.path.start_with?("/api/")
   end
 end

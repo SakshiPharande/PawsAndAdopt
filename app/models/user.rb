@@ -8,8 +8,11 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   enum role: { user: 0, admin: 1, super_admin: 2 }
 
-  # Attach profile image using Active Storage
-  has_one_attached :profile_image
+    # Attach profile image using Active Storage
+    has_one_attached :profile_image
+    has_many :pets
+    has_many :donate_pets
+
 
   # Method to return profile image URL (with default)
   def profile_image_url

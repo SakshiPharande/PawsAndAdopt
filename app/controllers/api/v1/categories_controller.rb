@@ -1,14 +1,12 @@
-class Api::V1::CategoriesController < ApplicationController
+class Api::V1::CategoriesController < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: [ :index ]
 
   def index
-    categories = Category.kept  # Fetch only kept categories
+    categories = Category.kept
     if categories.any?
       render json: { success: true, categories: categories }, status: :ok
     else
-      render json: { success: false, message: "No categories found" }, status: :not_found
+      raise ActiveRecord::RecordNotFound, "No categories found"
     end
-  rescue StandardError => e
-    render json: { success: false, error: e.message }, status: :internal_server_error
   end
 end

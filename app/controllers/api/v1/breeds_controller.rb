@@ -1,4 +1,4 @@
-class Api::V1::BreedsController < ApplicationController
+class Api::V1::BreedsController < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: [ :index ]
 
 
@@ -7,9 +7,7 @@ class Api::V1::BreedsController < ApplicationController
     if breeds.any?
       render json: { success: true, breeds: breeds }, status: :ok
     else
-      render json: { success: false, message: "No breeds found" }, status: :not_found
+      raise ActiveRecord::RecordNotFound, "No breeds found"
     end
-  rescue StandardError => e
-    render json: { success: false, error: e.message }, status: :internal_server_error
   end
 end

@@ -1,5 +1,6 @@
-class Api::V1::PetsController < ApplicationController
+class Api::V1::PetsController < Api::V1::BaseController
   skip_before_action :authenticate_user!, only: [ :index ]  # Public access
+  # skip_before_action :authenticate_user_api_request!, only: [ :index ]
 
   def index
     pets = Pet.kept.includes(:breed, :category)

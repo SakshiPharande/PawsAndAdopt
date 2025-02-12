@@ -39,19 +39,19 @@ Rails.application.routes.draw do
     resource :profile, only: [ :show, :update ]
   end
 
-  # User routes (Restricted to normal users)
-  namespace :user do
-    get "dashboard", to: "dashboards#show", as: "dashboard"
-  end
+
 
   # API routes for user profile management (JSON data)
   namespace :api do
     namespace :v1 do
       post "login", to: "auth#login"  # Login API
+      get "dashboard", to: "dashboards#index", as: "dashboard"    # User routes (Restricted to normal users)
       resources :users, only: [ :show, :create, :update, :destroy ]
       resources :categories, only: [ :index ]
       resources :breeds, only: [ :index ]
       resources :pets, only: [ :index ]
+      resources :donate_pets, only: [ :index ]
+      resources :adopt_pets, only: [ :index ]
     end
   end
 end
