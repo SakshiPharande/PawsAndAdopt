@@ -12,6 +12,7 @@ class User < ApplicationRecord
     has_one_attached :profile_image
     has_many :pets
     has_many :donate_pets
+    has_many :adopt_pets
 
 
   # Method to return profile image URL (with default)

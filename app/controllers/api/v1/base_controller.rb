@@ -3,7 +3,7 @@ class Api::V1::BaseController < ActionController::API
   include JwtHelper
 
   # skip_before_action :verify_authenticity_token  # Disable CSRF for API requests
-  before_action :authenticate_user!
+  before_action :authenticate_user
 
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
@@ -15,13 +15,11 @@ class Api::V1::BaseController < ActionController::API
     token = request.headers["Authorization"]&.split(" ")&.last
     decoded = decode_token(token)
 
-    if decoded
-      @current_user = User.find_by(id: decoded[:user_id])
-      render json: { error: "Unauthorized: Please login first" }, status: :unauthorized unless @current_user
-    else
-      render json: { error: "Unauthorized: Please login first" }, status: :unauthorized
+    unless decoded && (@current_user = User.find_by(id: decoded[:user_id]))
+      render json: { error: "Unauthorized: Please login first" }, status: :unauthorized and return
     end
   end
+
 
   # Handle Record Not Found (e.g., when querying a non-existent record)
   def record_not_found(exception)

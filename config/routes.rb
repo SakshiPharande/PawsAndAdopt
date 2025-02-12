@@ -42,7 +42,7 @@ Rails.application.routes.draw do
 
 
   # API routes for user profile management (JSON data)
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     namespace :v1 do
       post "login", to: "auth#login"  # Login API
       get "dashboard", to: "dashboards#index", as: "dashboard"    # User routes (Restricted to normal users)

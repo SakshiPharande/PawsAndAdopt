@@ -2,7 +2,6 @@ class Api::V1::AuthController < ApplicationController
   include JwtHelper
 
   skip_before_action :authenticate_user!, only: [ :login ]
-  skip_before_action :authenticate_user_api_request!, only: [ :login ]
 
   # POST /api/v1/login
   # def login

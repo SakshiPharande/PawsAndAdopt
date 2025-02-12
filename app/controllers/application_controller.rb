@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session, if: :api_request?
   skip_before_action :verify_authenticity_token
 
   # Use Devise authentication for admin  only
   before_action :authenticate_user!, unless: :api_request?
+  # before_action :authenticate_admin!, if: :admin_request?  # Ensure only admins use Devise auth
 
 
   helper_method :api_request?
@@ -37,4 +38,8 @@ class ApplicationController < ActionController::Base
   def api_request?
     request.format.json? || request.path.start_with?("/api/")
   end
+  # chek admin requets
+  # def admin_request?
+  #   request.path.start_with?("/admin")
+  # end
 end
