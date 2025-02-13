@@ -5,7 +5,7 @@
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>#</th>
                     <th>User Name</th>
                     <th>User Email</th>
                     <th>Category</th>
@@ -20,9 +20,9 @@
             </thead>
             <tbody>
                 <% if @donate_pets.present? %>
-                    <% @donate_pets.each do |donate_pet| %>
+                    <% @donate_pets.each_with_index do |donate_pet, i| %>
                         <turbo-frame id="donate_pet_<%= donate_pet.id %>">
-                            <%= render partial: "admin/donate_pets/donate_pet", locals: { donate_pet: donate_pet } %>
+                            <%= render partial: "admin/donate_pets/donate_pet", locals: { donate_pet: donate_pet, index: i + 1 } %>
                         </turbo-frame>
                     <% end %>
                 <% else %>

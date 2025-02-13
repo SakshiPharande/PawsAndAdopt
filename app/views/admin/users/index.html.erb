@@ -4,7 +4,7 @@
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
@@ -13,9 +13,9 @@
         </thead>
       <tbody>
         <% if @users.present? %>
-        <% @users.each do |user| %>
+        <%@users.each_with_index do |user, i| %>
             <tr>
-                <td><%= user.id %></td>
+                <td><%= i + 1 %></td>
                 <td><%= user.first_name %></td>
                 <td><%= user.last_name %></td>
                 <td><%= user.email %></td>

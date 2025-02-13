@@ -8,7 +8,7 @@
     <table class="table table-bordered table-hover">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Category Name</th>
                 <th>Breed Name</th>
                 <th>Age</th>
@@ -19,9 +19,9 @@
         </thead>
         <tbody>
             <% if @pets.present? %>
-                <% @pets.each do |pet| %>
+                <% @pets.each_with_index do |pet, i| %>
                     <tr>
-                        <td><%= pet.id %></td>
+                        <td><%= i+1 %></td>
                         <td><%= pet.category.category_name if pet.category %></td>
                         <td><%= pet.breed.breed_name if pet.breed %></td>
                         <td><%= pet.age%></td>
