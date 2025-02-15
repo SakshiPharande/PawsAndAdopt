@@ -74,7 +74,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_11_051123) do
     t.string "address", null: false
     t.string "phone_no", null: false
     t.integer "status", default: 0
-    t.datetime "pet_donate_date"
+    t.datetime "expected_donate_date"
+    t.datetime "actual_donate_date"
     t.integer "user_id", null: false
     t.integer "pet_id", null: false
     t.datetime "created_at", null: false

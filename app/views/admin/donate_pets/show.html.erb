@@ -43,18 +43,36 @@
               <p><strong>Gender:</strong> <%= @donate_pet.pet_gender %></p>
             </div>
             <div class="col-md-6">
-              <p><strong>Expected Donation Date:</strong> <%= @donate_pet.pet_donate_date.strftime("%d-%m-%Y") if @donate_pet.pet_donate_date %></p>
-              <p><strong>Actual Donation Date:</strong> <%= @donate_pet.updated_at.strftime("%d-%m-%Y") %></p>
+              <p><strong>Expected Donation Date:</strong> <%= @donate_pet.expected_donate_date.strftime("%d-%m-%Y") if @donate_pet.expected_donate_date %></p>
+              <p><strong>Actual Donation Date:</strong> <%= @donate_pet.actual_donate_date.strftime("%d-%m-%Y") if @donate_pet.actual_donate_date %></p>
             </div>
           </div>
 
-          <div class="text-center mt-4">
-            <% if @donate_pet.pet.pet_image_url.present? %>
-              <img src="<%= @donate_pet.pet.pet_image_url %>" class="img-fluid rounded shadow" alt="Pet Image" style="max-width: 250px; max-height: 250px;">
-            <% else %>
-              <p class="text-muted">No Image Available</p>
-            <% end %>
+           <!-- Carousel for Pet Images -->
+        <% if @donate_pet.pet.pet_images.attached? %>
+          <div id="petImageCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <% @donate_pet.pet.pet_images.each_with_index do |image, index| %>
+                <div class="carousel-item <%= 'active' if index == 0 %>">
+                  <%= image_tag image, class: "d-block w-100", style: "height: 300px; object-fit: cover;" %>
+                </div>
+              <% end %>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#petImageCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#petImageCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
+        <% else %>
+          <div class="text-center p-3">
+            <p class="text-muted">No images available</p>
+          </div>
+        <% end %>
+
         </div>
 
         <div class="card-footer text-center bg-light">
