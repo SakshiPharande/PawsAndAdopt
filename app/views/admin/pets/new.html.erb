@@ -1,129 +1,117 @@
-<div class="container mt-4">
-  <h2 class="text-center mb-4">Add Pet</h2>
-
-  <%= form_with model: @pet, url: admin_pets_path, method: :post, local: true, class: "needs-validation", multipart: true do |f| %>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :category_id, "Category", class: "form-label" %>
-        <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Add Pet</h5>
       </div>
-
-      <div class="col-md-6">
-        <%= f.label :breed_id, "Breed", class: "form-label" %>
-        <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :age, "Age", class: "form-label" %>
-        <%= f.number_field :age, class: "form-control", required: true %>
-      </div>
-
-      <div class="col-md-6">
-        <%= f.label :temperament, "Temperament", class: "form-label" %>
-        <%= f.text_field :temperament, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :gender, "Gender", class: "form-label" %>
-        <%= f.select :gender, [["Male", 1], ["Female", 2], ["Unknown", 0]], { prompt: "Select Gender" }, class: "form-select" %>
-      </div>
-
-      <div class="col-md-6">
-        <%= f.label :status, "Status", class: "form-label" %>
-        <%= f.select :status, [["Available", 0], ["Unavailable", 1]], { prompt: "Select Status" }, class: "form-select" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :medical_history, "Medical History", class: "form-label" %>
-        <%= f.text_area :medical_history, class: "form-control" %>
-      </div>
-
-      <div class="col-md-6">
-        <%= f.label :recommended_food, "Recommended Food", class: "form-label" %>
-        <%= f.text_area :recommended_food, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :common_health_issues, "Common Health Issues", class: "form-label" %>
-        <%= f.text_area :common_health_issues, class: "form-control" %>
-      </div>
-
-      <div class="col-md-6">
-        <%= f.label :vaccination_status, "Vaccination Status", class: "form-label" %><br>
-        <%= f.check_box :vaccination_status, class: "form-check-input" %>
-        <%= f.label :vaccination_status, "Vaccinated", class: "form-check-label" %>
-      </div>
-    </div>
-
-    <!-- Multiple Image Upload -->
-    <div class="row mb-3">
-      <div class="col-md-12">
-        <%= f.label :pet_images, "Upload Images", class: "form-label" %>
-        <%= f.file_field :pet_images, multiple: true, accept: "image/*", class: "form-control", id: "pet-image-input", onchange: "handleImageUpload(event)" %>
-
-        <!-- Uploaded Images List -->
-        <div id="image-list" class="mt-3 row"></div>
-      </div>
-    </div>
-
-    <!-- Preview Modal -->
-    <div class="modal fade" id="imagePreviewModal" tabindex="-1" aria-labelledby="imagePreviewLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="imagePreviewLabel">Image Preview</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      
+      <div class="card-body">
+        <%= form_with model: @pet, url: admin_pets_path, method: :post, local: true, class: "needs-validation", multipart: true do |f| %>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :category_id, "Category", class: "form-label" %>
+              <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :breed_id, "Breed", class: "form-label" %>
+              <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select" %>
+            </div>
           </div>
-          <div class="modal-body text-center">
-            <img id="preview-image" src="" class="img-fluid" />
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :age, "Age", class: "form-label" %>
+              <%= f.number_field :age, class: "form-control", required: true %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :temperament, "Temperament", class: "form-label" %>
+              <%= f.text_field :temperament, class: "form-control" %>
+            </div>
           </div>
-        </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :gender, "Gender", class: "form-label" %>
+              <%= f.select :gender, [["Male", 1], ["Female", 2], ["Unknown", 0]], { prompt: "Select Gender" }, class: "form-select" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :status, "Status", class: "form-label" %>
+              <%= f.select :status, [["Available", 0], ["Unavailable", 1]], { prompt: "Select Status" }, class: "form-select" %>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :medical_history, "Medical History", class: "form-label" %>
+                <%= f.text_area :medical_history, class: "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :recommended_food, "Recommended Food", class: "form-label" %>
+                <%= f.text_area :recommended_food, class: "form-control" %>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :common_health_issues, "Common Health Issues", class: "form-label" %>
+                <%= f.text_area :common_health_issues, class: "form-control" %>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <%= f.label :vaccination_status, "Vaccination Status", class: "form-label" %><br>
+                <%= f.check_box :vaccination_status, class: "form-check-input" %>
+                <%= f.label :vaccination_status, "Vaccinated", class: "form-check-label" %>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Multiple Image Upload -->
+          <div class="mb-3">
+            <%= f.label :pet_images, "Upload Images", class: "form-label" %>
+            <%= f.file_field :pet_images, multiple: true, accept: "image/*", class: "form-control", id: "pet-image-input", onchange: "handleImageUpload(event)" %>
+            <div id="image-list" class="mt-3 row"></div>
+          </div>
+          
+          <div class="d-flex justify-content-between">
+            <%= link_to "Cancel", admin_pets_path, class: "btn btn-outline-secondary" %>
+            <%= f.submit "Add Pet", class: "btn text-white", style: "background-color: rgb(105, 108, 255);" %>
+          </div>
+        <% end %>
       </div>
     </div>
-
-    <div class="mb-3 text-center">
-      <%= f.submit "Add Pet", class: "btn btn-primary" %>
-    </div>
-
-  <% end %>
+  </div>
 </div>
 
 <!-- JavaScript for Image Upload, Preview & Remove -->
 <script>
-  let uploadedFiles = []; // Global array to store files
-
+  let uploadedFiles = [];
+  
   function handleImageUpload(event) {
     const files = Array.from(event.target.files);
     const imageList = document.getElementById("image-list");
 
     files.forEach((file) => {
-      // Check if file is already uploaded to avoid duplicates
       if (!uploadedFiles.some((f) => f.name === file.name && f.size === file.size)) {
         uploadedFiles.push(file);
-
         const reader = new FileReader();
         reader.onload = function (e) {
           const imageUrl = e.target.result;
           
-          // Create image preview element
           const colDiv = document.createElement("div");
           colDiv.className = "col-md-3 mb-2";
           
           const img = document.createElement("img");
           img.src = imageUrl;
           img.className = "img-thumbnail";
-          img.style = "width: 100%; height: auto; cursor: pointer;";
+          img.style = "width: 150px; height: 150px; object-fit: cover; cursor: pointer;";
 
-          // Remove button
           const removeBtn = document.createElement("button");
           removeBtn.innerText = "Remove";
           removeBtn.className = "btn btn-danger btn-sm mt-1";
@@ -142,29 +130,19 @@
         reader.readAsDataURL(file);
       }
     });
-
-    // Reattach all selected images to the file input
     updateFileInput();
   }
-
+  
   function updateFileInput() {
     const input = document.getElementById("pet-image-input");
-    const dataTransfer = new DataTransfer(); // Creates a new file list
-
+    const dataTransfer = new DataTransfer();
     uploadedFiles.forEach((file) => dataTransfer.items.add(file));
-
-    input.files = dataTransfer.files; // Set the input files list
+    input.files = dataTransfer.files;
   }
-
+  
   function removeImage(file, element) {
-    // Remove the file from the uploadedFiles array
     uploadedFiles = uploadedFiles.filter((f) => f !== file);
-
-    // Remove the image preview element
     element.remove();
-
-    // Update file input
     updateFileInput();
   }
 </script>
-  

@@ -1,98 +1,79 @@
-<div class="container mt-4">
-  <h2 class="text-center mb-4">Edit Pet</h2>
-
-  <%= form_with model: @pet, url: admin_pet_path(@pet), method: :patch, local: true, class: "needs-validation", multipart: true do |f| %>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :category_id, "Category", class: "form-label" %>
-        <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, { class: "form-select" } %>
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8">
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Edit Pet</h5>
       </div>
-      <div class="col-md-6">
-        <%= f.label :breed_id, "Breed", class: "form-label" %>
-        <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, { class: "form-select" } %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :age, "Age", class: "form-label" %>
-        <%= f.number_field :age, class: "form-control", required: true %>
-      </div>
-      <div class="col-md-6">
-        <%= f.label :temperament, "Temperament", class: "form-label" %>
-        <%= f.text_field :temperament, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :gender, "Gender", class: "form-label" %>
-        <%= f.select :gender, [["Male", 1], ["Female", 2], ["Unknown", 0]], { prompt: "Select Gender" }, { class: "form-select" } %>
-      </div>
-      <div class="col-md-6">
-        <%= f.label :status, "Status", class: "form-label" %>
-        <%= f.select :status, [["Available", 0], ["Unavailable", 1]], { prompt: "Select Status" }, { class: "form-select" } %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :medical_history, "Medical History", class: "form-label" %>
-        <%= f.text_area :medical_history, class: "form-control" %>
-      </div>
-      <div class="col-md-6">
-        <%= f.label :recommended_food, "Recommended Food", class: "form-label" %>
-        <%= f.text_area :recommended_food, class: "form-control" %>
-      </div>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <%= f.label :common_health_issues, "Common Health Issues", class: "form-label" %>
-        <%= f.text_area :common_health_issues, class: "form-control" %>
-      </div>
-      <div class="col-md-6">
-        <%= f.label :vaccination_status, "Vaccination Status", class: "form-label" %><br>
-        <%= f.check_box :vaccination_status, class: "form-check-input" %>
-        <%= f.label :vaccination_status, "Vaccinated", class: "form-check-label" %>
-      </div>
-    </div>
-
-    <!-- Existing Images -->
-    <div class="row mb-3">
-      <h4>Existing Images</h4>
-      <div id="existing-images" class="row">
-        <% @pet.pet_images.each do |image| %>
-          <div class="col-md-3 mb-2" id="image-<%= image.id %>">
-            <img src="<%= url_for(image) %>" class="img-thumbnail" style="width: 100%; height: auto; cursor: pointer;">
-            <button type="button" class="btn btn-danger btn-sm mt-1" onclick="removeExistingImage(<%= image.id %>)">Remove</button>
-            <input type="hidden" name="pet[existing_images][]" value="<%= image.id %>">
+      
+      <div class="card-body">
+        <%= form_with model: @pet, url: admin_pet_path(@pet), method: :patch, local: true, class: "needs-validation", multipart: true do |f| %>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :category_id, "Category", class: "form-label" %>
+              <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :breed_id, "Breed", class: "form-label" %>
+              <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select" %>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :age, "Age", class: "form-label" %>
+              <%= f.number_field :age, class: "form-control", required: true %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :temperament, "Temperament", class: "form-label" %>
+              <%= f.text_field :temperament, class: "form-control" %>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <%= f.label :gender, "Gender", class: "form-label" %>
+              <%= f.select :gender, [["Male", 1], ["Female", 2], ["Unknown", 0]], { prompt: "Select Gender" }, class: "form-select" %>
+            </div>
+            <div class="col-md-6">
+              <%= f.label :status, "Status", class: "form-label" %>
+              <%= f.select :status, [["Available", 0], ["Unavailable", 1]], { prompt: "Select Status" }, class: "form-select" %>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <%= f.label :pet_images, "Upload Images", class: "form-label" %>
+            <%= f.file_field :pet_images, multiple: true, accept: "image/*", class: "form-control", id: "pet-image-input", onchange: "handleImageUpload(event)" %>
+            <div id="image-list" class="mt-3 row"></div>
+          </div>
+          
+          <!-- Show Existing Images -->
+          <div class="mb-3">
+            <h6>Existing Images</h6>
+            <div class="row">
+              <% @pet.pet_images.each do |image| %>
+                <div class="col-md-3 mb-2" id="existing-image-<%= image.id %>">
+                  <img src="<%= url_for(image) %>" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
+                  <button type="button" class="btn btn-danger btn-sm mt-1" onclick="removeExistingImage(<%= image.id %>)">Remove</button>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between">
+            <%= link_to "Cancel", admin_pets_path, class: "btn btn-outline-secondary" %>
+            <%= f.submit "Update Pet", class: "btn text-white", style: "background-color: rgb(105, 108, 255);" %>
           </div>
         <% end %>
       </div>
     </div>
-
-    <!-- Upload New Images -->
-    <div class="row mb-3">
-      <div class="col-md-12">
-          <%= f.label :pet_images, "Upload Images", class: "form-label" %>
-          <%= f.file_field :pet_images, multiple: true, accept: "image/*", class: "form-control", id: "pet-image-input" %>
-      <div id="image-list" class="mt-3 row"></div>
-    </div>
-
-    </div>
-
-    <div class="mb-3 text-center">
-      <%= f.submit "Update Pet", class: "btn btn-success" %>
-    </div>
-  <% end %>
+  </div>
 </div>
 
-<!-- JavaScript for Handling Image Upload & Removal -->
+<!-- JavaScript for Image Upload, Preview & Remove -->
 <script>
   let uploadedFiles = [];
-  let removedImages = [];
-
+  
   function handleImageUpload(event) {
     const files = Array.from(event.target.files);
     const imageList = document.getElementById("image-list");
@@ -102,23 +83,29 @@
         uploadedFiles.push(file);
         const reader = new FileReader();
         reader.onload = function (e) {
+          const imageUrl = e.target.result;
+          
           const colDiv = document.createElement("div");
           colDiv.className = "col-md-3 mb-2";
-
+          
           const img = document.createElement("img");
-          img.src = e.target.result;
+          img.src = imageUrl;
           img.className = "img-thumbnail";
-          img.style = "width: 100%; height: auto; cursor: pointer;";
+          img.style = "width: 150px; height: 150px; object-fit: cover; cursor: pointer;";
 
           const removeBtn = document.createElement("button");
           removeBtn.innerText = "Remove";
           removeBtn.className = "btn btn-danger btn-sm mt-1";
           removeBtn.onclick = function () {
-            removeNewImage(file, colDiv);
+            removeImage(file, colDiv);
           };
 
+          const btnDiv = document.createElement("div");
+          btnDiv.className = "mt-1 text-center";
+          btnDiv.appendChild(removeBtn);
+
           colDiv.appendChild(img);
-          colDiv.appendChild(removeBtn);
+          colDiv.appendChild(btnDiv);
           imageList.appendChild(colDiv);
         };
         reader.readAsDataURL(file);
@@ -126,36 +113,27 @@
     });
     updateFileInput();
   }
-
+  
   function updateFileInput() {
     const input = document.getElementById("pet-image-input");
     const dataTransfer = new DataTransfer();
     uploadedFiles.forEach((file) => dataTransfer.items.add(file));
     input.files = dataTransfer.files;
   }
-
-  function removeNewImage(file, element) {
+  
+  function removeImage(file, element) {
     uploadedFiles = uploadedFiles.filter((f) => f !== file);
     element.remove();
     updateFileInput();
   }
-
+  
   function removeExistingImage(imageId) {
-    removedImages.push(imageId);
-    document.getElementById(`image-${imageId}`).remove();
-    const form = document.querySelector("form");
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = "pet[removed_images][]";
-    input.value = imageId;
-    form.appendChild(input);
+    fetch(`/admin/pets/remove_image/${imageId}`, { method: "DELETE" })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById(`existing-image-${imageId}`).remove();
+        }
+      });
   }
-
-  document.addEventListener("DOMContentLoaded", function() {
-  const fileInput = document.getElementById("pet-image-input");
-  if (fileInput) {
-    fileInput.addEventListener("change", handleImageUpload);
-  }
-});
-
 </script>
