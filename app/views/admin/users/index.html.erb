@@ -1,49 +1,90 @@
-<div class="container mt-4">
-    <h1 class="text-center my-4">Users List</h1>
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center  text-white" style="background-color: rgb(105,108,255);">
+    <h5 class="mb-0">Users List</h5>
+    <input type="text" id="searchBox" class="form-control w-25" placeholder="Search users...">
+  </div>
 
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Action</th>
-            </tr>
-        </thead>
-      <tbody>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0" id="userTable">
         <% if @users.present? %>
-        <%@users.each_with_index do |user, i| %>
+          <% @users.each_with_index do |user, i| %>
             <tr>
-                <td><%= i + 1 %></td>
-                <td><%= user.first_name %></td>
-                <td><%= user.last_name %></td>
-                <td><%= user.email %></td>
-                <td>
-              <!-- View Icon -->
-           <%= link_to admin_user_path(user), class: "text-decoration-none" do %>
-              <i class="bi bi-eye text-success me-3" title="View User"></i>
-            <% end %>
-            <!-- Soft Delete Icon -->
-            <%= link_to discard_admin_user_path(user), 
-                data: { 
-                turbo_method: :patch, 
-                turbo_confirm: "Are you sure you want to delete this user?" 
-                }, 
-                class: "text-danger", 
-                title: "Soft Delete User", 
-                rel: "nofollow" do %>
-                <i class="bi bi-trash"></i>
-            <% end %>
+              <td><strong><%= i + 1 %></strong></td>
+              <td class="searchable"><%= user.first_name %></td>
+              <td class="searchable"><%= user.last_name %></td>
+              <td class="searchable"><%= user.email %></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle custom-dropdown-btn" data-bs-toggle="dropdown">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <!-- View User -->
+                    <li>
+                        <%= link_to admin_user_path(user), class: "dropdown-item text-success text-decoration-none" do %>
+                            <i class="fas fa-eye me-2"></i> View
+                        <% end %>
+                    </li>
 
-            </td>
+                    <!-- Soft Delete User -->
+                    <li>
+                      <%= link_to discard_admin_user_path(user), 
+                          data: { 
+                            turbo_method: :patch, 
+                            turbo_confirm: "Are you sure you want to delete this user?" 
+                          }, 
+                          class: "dropdown-item dropdown-option text-danger text-decoration-none", 
+                          rel: "nofollow" do %>
+                        <i class="fas fa-trash-alt me-2"></i> Delete
+                      <% end %>
+                    </li>
+                  </ul>
+                </div>
+              </td>
             </tr>
-        <% end %>
+          <% end %>
         <% else %>
-            <tr>
-            <td colspan="6" class="text-center">No users found.</td>
-            </tr>
+          <tr>
+            <td colspan="5" class="text-center">No users found.</td>
+          </tr>
         <% end %>
-        </tbody>
+      </tbody>
     </table>
   </div>
+</div>
+
+<script>
+  // Search Box Functionality
+  document.getElementById("searchBox").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#userTable tr");
+
+    rows.forEach(row => {
+      let text = row.querySelectorAll(".searchable");
+      let found = Array.from(text).some(cell => cell.textContent.toLowerCase().includes(filter));
+      row.style.display = found ? "" : "none";
+    });
+  });
+</script>
+
+<style>
+  /* Hide dropdown arrow */
+  .custom-dropdown-btn::after {
+    display: none !important;
+  }
+
+  /* Ensure dropdown links do not have an underline */
+  .dropdown-menu a {
+    text-decoration: none !important;
+  }
+</style>
