@@ -1,5 +1,5 @@
 <tr id="donate_pet_<%= donate_pet.id %>">
-  <td><%= index %></td>
+  <td><strong><%= index %></strong></td>
   <td><%= donate_pet.user.first_name %> <%= donate_pet.user.last_name %></td>
   <td><%= donate_pet.user.email %></td>
   <td><%= donate_pet.category_name %></td>
@@ -22,19 +22,25 @@
 
   <td>
     <div class="d-flex gap-2">
-      <%= link_to "View", admin_donate_pet_path(donate_pet), class: "btn btn-primary btn-sm" %>
+      <%= link_to admin_donate_pet_path(donate_pet), class: "btn btn-sm btn-outline-primary", title: "View" do %>
+        <i class="bi bi-eye"></i>
+      <% end %>
 
-      <%= link_to "Accept", admin_donate_pet_path(donate_pet, status: :accepted), 
+      <%= link_to admin_donate_pet_path(donate_pet, status: :accepted), 
           method: :patch, 
-          class: "btn btn-success btn-sm", 
+          class: "btn btn-sm btn-outline-success", 
           data: { turbo_method: :patch, turbo_frame: "donate_pet_#{donate_pet.id}", 
-                  turbo_confirm: "Are you sure you want to accept this donation request?" } %>
+                  turbo_confirm: "Are you sure you want to accept this donation request?" } do %>
+        <i class="bi bi-check-circle"></i>
+      <% end %>
 
-      <%= link_to "Reject", admin_donate_pet_path(donate_pet, status: :rejected), 
+      <%= link_to admin_donate_pet_path(donate_pet, status: :rejected), 
           method: :patch, 
-          class: "btn btn-danger btn-sm", 
+          class: "btn btn-sm btn-outline-danger", 
           data: { turbo_method: :patch, turbo_frame: "donate_pet_#{donate_pet.id}", 
-                  turbo_confirm: "Are you sure you want to reject this donation request?" } %>
-  </div>
+                  turbo_confirm: "Are you sure you want to reject this donation request?" } do %>
+        <i class="bi bi-x-circle"></i>
+      <% end %>
+    </div>
   </td>
 </tr>
