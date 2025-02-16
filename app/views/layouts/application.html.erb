@@ -26,14 +26,18 @@
     <%= render "shared/sidebar" %>
   <% end %>
 
-  <div class="container bg-light "> 
+  <div class="container bg-light ">
+
+   <% if user_signed_in? %>
     <nav aria-label="breadcrumb" class="mt-4 px-4">
-    <%= breadcrumbs %>
-   </nav>
-    
+      <%= breadcrumbs %>
+    </nav>
+   <% end %>
+   
     <div class="mt-4">
       <%= yield %>  
     </div>
+
   </div>
   </body>
 </html>
