@@ -31,7 +31,7 @@
         <% if @breeds.present? %>
           <% @breeds.each_with_index do |breed, i| %>
             <tr>
-              <td><strong><%= i + 1 %></strong></td>
+              <td><strong><%= @breeds.offset_value + i + 1 %></strong></td>
               <td class="searchable"><%= breed.breed_name %></td>
               <td class="searchable"><%= breed.category.category_name if breed.category %></td>
               <td>
@@ -58,6 +58,7 @@
         <% end %>
       </tbody>
     </table>
+        <%= pagination_links(@breeds) %>
   </div>
 </div>
 
