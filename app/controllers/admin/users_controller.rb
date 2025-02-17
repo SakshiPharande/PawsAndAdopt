@@ -1,6 +1,6 @@
 class Admin::UsersController < ApplicationController
   def index
-    @users = User.kept.where(role: "user")
+    @users = User.kept.where(role: "user").paginate(page: params[:page], per_page: 5)
   end
 
   def show

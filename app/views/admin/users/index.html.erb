@@ -19,7 +19,7 @@
         <% if @users.present? %>
           <% @users.each_with_index do |user, i| %>
             <tr>
-              <td><strong><%= i + 1 %></strong></td>
+              <td><strong><%= @users.offset_value + i + 1 %></strong></td>
               <td class="searchable"><%= user.first_name %></td>
               <td class="searchable"><%= user.last_name %></td>
               <td class="searchable"><%= user.email %></td>
@@ -50,6 +50,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= pagination_links(@users) %>
   </div>
 </div>
 
