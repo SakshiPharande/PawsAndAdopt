@@ -1,6 +1,6 @@
 class Admin::PetsController < ApplicationController
   def index
-    @pets = Pet.kept.includes(:category, :breed)
+    @pets = Pet.kept.includes(:category, :breed).paginate(page: params[:page], per_page: 5)
   end
 
   def show
