@@ -1,6 +1,6 @@
 class Admin::AdoptPetsController < ApplicationController
   def index
-    @adopt_pets = AdoptPet.includes(user: {}, pet: { breed: :category }).all
+    @adopt_pets = AdoptPet.includes(user: {}, pet: { breed: :category }).all.paginate(page: params[:page], per_page: 5)
   end
 
   def show
