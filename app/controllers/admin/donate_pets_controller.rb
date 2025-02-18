@@ -11,7 +11,7 @@ class Admin::DonatePetsController < ApplicationController
 
   def update
     @donate_pet = DonatePet.find(params[:id])
-
+    @donate_pet_index = params[:index].to_i if params[:index].present?
     update_success = false
 
     if params[:status].present? && DonatePet.statuses.keys.include?(params[:status])
@@ -22,10 +22,19 @@ class Admin::DonatePetsController < ApplicationController
 
     respond_to do |format|
       if update_success
+        # Ensure Turbo Stream is used to replace the row correctly
         format.html { redirect_to admin_donate_pets_path, notice: "Donation request updated successfully." }
         format.turbo_stream
       else
         format.html { redirect_to admin_donate_pets_path, alert: "Failed to update donation request." }
+
+        format.turbo_stream do
+          # Ensure Turbo Stream replaces the correct row using its ID
+          render turbo_stream: turbo_stream.replace("donate_pet_#{@donate_pet.id}",
+            partial: "admin/donate_pets/donate_pet", formats: :html,
+            locals: { donate_pet: @donate_pet, index: @donate_pet_index }
+          )
+        end
       end
     end
   end
