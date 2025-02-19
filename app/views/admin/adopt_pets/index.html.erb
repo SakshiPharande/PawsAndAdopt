@@ -25,9 +25,7 @@
       <tbody class="table-border-bottom-0" id="adoptPetTable">
         <% if @adopt_pets.present? %>
           <% @adopt_pets.each_with_index do |adopt_pet, i| %>
-            <turbo-frame id="adopt_pet_<%= adopt_pet.id %>">
-              <%= render partial: "admin/adopt_pets/adopt_pet", locals: { adopt_pet: adopt_pet, index: i + 1 } %>
-            </turbo-frame>
+            <%= render partial: "admin/adopt_pets/adopt_pet", locals: { adopt_pet: adopt_pet, index: i + 1 } %>
           <% end %>
         <% else %>
           <tr>
@@ -35,6 +33,7 @@
           </tr>
         <% end %>
       </tbody>
+
     </table>
     <div>
         <%= pagination_links(@adopt_pets) %>
