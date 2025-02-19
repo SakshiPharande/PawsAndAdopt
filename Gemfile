@@ -67,3 +67,5 @@ gem "jwt"
 
 gem "will_paginate", "~> 3.3.1" # Latest stable version
 gem "will_paginate-bootstrap5"
+
+gem "byebug", "~> 11.1"
