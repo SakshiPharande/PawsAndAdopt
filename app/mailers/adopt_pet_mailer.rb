@@ -6,7 +6,17 @@ class AdoptPetMailer < ApplicationMailer
     @user = @adopt_pet.user
     @previous_status = previous_status.capitalize
     @new_status = @adopt_pet.status.capitalize
+    @pet = @adopt_pet.pet
+    @breed = @pet.breed
+    @category = @pet.category
 
-    mail(to: @user.email, subject: "Your Adoption Request Status Changed to #{@new_status}")
+    # Attach images for embedding in email
+    if @pet.pet_images.attached?
+      @pet.pet_images.each do |image|
+        attachments.inline[image.filename.to_s] = image.download
+      end
+    end
+
+    mail(to: @user.email, subject: "Your Adoption Request Status: #{@new_status}")
   end
 end
