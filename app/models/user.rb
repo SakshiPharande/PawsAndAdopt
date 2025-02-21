@@ -22,8 +22,6 @@ class User < ApplicationRecord
     else
       default_image =
         case role
-        when "superadmin"
-          "default-super-admin-profile-pic.png"
         when "admin"
           "default-admin-profile-pic.jpg"
         else
