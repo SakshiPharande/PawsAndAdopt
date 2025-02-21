@@ -15,9 +15,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :unauthorized_access
 
   def after_sign_in_path_for(resource)
-    if resource.super_admin?
-      admin_dashboard_path  # Both admin & super admin use the same dashboard
-    elsif resource.admin?
+    if resource.admin?
       admin_dashboard_path
     elsif resource.user?
       api_v1_dashboard_path

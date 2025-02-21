@@ -6,7 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   validates :email, presence: true, uniqueness: true
-  enum role: { user: 0, admin: 1, super_admin: 2 }
+  enum role: { user: 0, admin: 1 }
 
     # Attach profile image using Active Storage
     has_one_attached :profile_image
