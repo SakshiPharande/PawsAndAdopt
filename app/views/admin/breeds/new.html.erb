@@ -11,13 +11,16 @@
           <!-- Breed Name Field -->
           <div class="mb-3">
             <%= f.label :breed_name, "Breed Name", class: "form-label" %>
-            <%= f.text_field :breed_name, class: "form-control", placeholder: "Enter breed name", required: true %>
+            <%= f.text_field :breed_name, id: "breed_breed_name", class: "form-control", placeholder: "Enter breed name", required: true, 
+              pattern: "[a-zA-Z\s]+", title: "Only letters and spaces are allowed." %>
           </div>
 
           <!-- Category Dropdown -->
           <div class="mb-3">
             <%= f.label :category_id, "Category", class: "form-label" %>
-            <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select" %>
+            <%= f.collection_select :category_id, @categories, :id, :category_name, 
+              { prompt: "Select Category" }, 
+              { class: "form-select", id: "breed_category_id", required: true } %>
           </div>
           
           <!-- Buttons -->
