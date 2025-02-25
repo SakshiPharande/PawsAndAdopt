@@ -42,7 +42,7 @@ class Admin::BreedsController < ApplicationController
   def discard
     @breed = Breed.find(params[:id])
     if @breed.discard
-      flash[:notice] = "Breed has been deleted (soft deleted)."
+      flash[:notice] = "Breed has been deleted."
     else
       flash[:alert] = "Failed to delete breed."
     end

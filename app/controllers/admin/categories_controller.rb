@@ -35,8 +35,8 @@ class Admin::CategoriesController < ApplicationController
 
   def discard
     @category = Category.find(params[:id])
-    if @category.discard  # Soft delete the user
-      flash[:notice] = "Category has been deleted (soft deleted)."
+    if @category.discard
+      flash[:notice] = "Category has been deleted."
     else
       flash[:alert] = "Failed to delete user."
     end

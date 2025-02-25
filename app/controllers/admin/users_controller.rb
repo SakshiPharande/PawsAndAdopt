@@ -9,10 +9,10 @@ class Admin::UsersController < ApplicationController
 
   def discard
     @user = User.find(params[:id])  # Find the user
-    if @user.discard  # Soft delete the user
-      flash[:notice] = "User has been discarded (soft deleted)."
+    if @user.discard
+      flash[:notice] = "User has been deleted."
     else
-      flash[:alert] = "Failed to discard user."
+      flash[:alert] = "Failed to deleted user."
     end
     redirect_to admin_users_path
   end

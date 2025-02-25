@@ -57,7 +57,7 @@ class Admin::PetsController < ApplicationController
   def discard
     @pet = Pet.find(params[:id])
     if @pet.discard
-      flash[:notice] = "pet has been deleted (soft deleted)."
+      flash[:notice] = "pet has been deleted."
     else
       flash[:alert] = "Failed to delete pet."
     end
