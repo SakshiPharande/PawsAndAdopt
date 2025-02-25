@@ -36,7 +36,11 @@ Rails.application.routes.draw do
     end
     resources :adopt_pets, only: [ :index, :show, :update ] do
     end
-    resource :admins, only: [ :show, :update, :edit ]
+    resource :admins, only: [ :show, :update, :edit ] do
+      member do
+        delete :remove_profile_image
+      end
+    end
   end
 
 

@@ -25,6 +25,19 @@ class Admin::AdminsController < ApplicationController
     end
   end
 
+  def remove_profile_image
+    @admin = current_user
+
+    if @admin.profile_image.attached?
+      @admin.profile_image.purge # Deletes the image from Active Storage
+      flash[:notice] = "Profile image removed successfully."
+    else
+      flash[:alert] = "No profile image found."
+    end
+
+    redirect_to edit_admin_admins_path(@admin) # Redirect back to edit page
+  end
+
   private
 
   def admin_params

@@ -37,8 +37,10 @@
               <% if @admin.profile_image.attached? %>
                 <img id="profile-preview" src="<%= url_for(@admin.profile_image_url) %>" class="rounded-circle border mb-3" width="120" height="120" style="border: 3px solid rgb(105, 108, 255);">
                 <br>
-                <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProfileImage()">Remove</button>
-              <% else %>
+                <%= link_to "Remove", remove_profile_image_admin_admins_path(@admin),
+                    class: "btn btn-danger btn-sm mb-2",
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to remove your profile picture?" } %>
+              <% else %>             
                 <img id="profile-preview" src="#" class="rounded-circle border mb-3 d-none" width="120" height="120">
               <% end %>
             </div>
@@ -73,13 +75,12 @@
   }
 
   function removeProfileImage() {
-    fetch("/admin/admins/remove_profile_image", { method: "DELETE" })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById("profile-preview").remove();
-          document.getElementById("profile-image-input").value = "";
-        }
-      });
+    const preview = document.getElementById("profile-preview");
+    const fileInput = document.getElementById("profile-image-input");
+
+   
+    preview.src = "#";
+    preview.classList.add("d-none");
+    fileInput.value = "";
   }
 </script>
