@@ -40,13 +40,20 @@ class Admin::PetsController < ApplicationController
       end
     end
 
-    if @pet.update(pet_params)
+    # Preserve existing images and add new images only if provided
+    if params[:pet][:pet_images].present?
+      params[:pet][:pet_images].each do |image|
+        @pet.pet_images.attach(image) # Attach only new images
+      end
+    end
+
+    if @pet.update(pet_params.except(:pet_images)) # Exclude pet_images from update
       redirect_to admin_pets_path, notice: "Pet updated successfully!"
     else
       render :edit
     end
   end
-
+  
 
 
   def discard

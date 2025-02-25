@@ -72,8 +72,10 @@
 
 <!-- JavaScript for Image Upload, Preview & Remove -->
 <script>
-  let uploadedFiles = [];
-  
+    // Avoid redeclaring the variable if it already exists
+    if (typeof uploadedFiles === "undefined") {
+      var uploadedFiles = [];
+    }  
   function handleImageUpload(event) {
     const files = Array.from(event.target.files);
     const imageList = document.getElementById("image-list");
