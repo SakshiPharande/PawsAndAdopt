@@ -53,8 +53,6 @@ class Admin::PetsController < ApplicationController
       render :edit
     end
   end
-  
-
 
   def discard
     @pet = Pet.find(params[:id])

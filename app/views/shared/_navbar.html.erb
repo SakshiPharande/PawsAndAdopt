@@ -52,8 +52,19 @@
   <div class="alert <%= flash_class(type) %> alert-dismissible fade show shadow-sm position-fixed top-0 start-50 translate-middle-x text-center" 
        role="alert" style="max-width: 400px; z-index: 1050;">
     <%= message %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% end %>
 
+<script>
+  // Automatically fade out flash messages after 3 seconds (3000ms)
+document.addEventListener("turbo:load", function () {
+  setTimeout(() => {
+    let flashMessages = document.querySelectorAll(".alert");
+    flashMessages.forEach(msg => {
+      msg.style.opacity = "0";  // Fade out
+      setTimeout(() => msg.remove(), 500); // Remove after fade-out
+    });
+  }, 3000);
+});
 
+</script>
