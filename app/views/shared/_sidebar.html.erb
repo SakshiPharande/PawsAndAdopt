@@ -78,15 +78,6 @@
         </a>
       </li>
     </ul>
-
     <hr>
-
-    <!-- Logout Button (Properly Aligned) -->
-    <% if user_signed_in? %>
-      <div class="justify-content-center">
-        <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-danger fw-semibold shadow-sm w-100 p-2 rounded" %>
-      </div>
-    <% end %>
-
-  </div>
+</div>
 
