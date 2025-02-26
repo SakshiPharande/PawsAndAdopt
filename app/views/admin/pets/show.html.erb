@@ -30,7 +30,7 @@
             <div class="card-body">
               <h4 class="card-title text-primary text-center"><%= @pet.category.category_name if @pet.category %> - <%= @pet.breed.breed_name if @pet.breed %></h4>
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Age:</strong> <%= @pet.age %> years</li>
+                <li class="list-group-item"><strong>Age:</strong> <%= @pet.age %>  <%= @pet.age_unit %></li>
                 <li class="list-group-item"><strong>Gender:</strong> <%= @pet.gender %></li>
                 <li class="list-group-item"><strong>Status:</strong> <%= @pet.status %></li>
                 <li class="list-group-item"><strong>Temperament:</strong> <%= @pet.temperament %></li>

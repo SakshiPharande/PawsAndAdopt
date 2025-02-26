@@ -48,7 +48,7 @@
                   
                   <!-- Pet Details -->
                   <li class="list-group-item"><strong>Gender:</strong> <%= @adopt_pet.pet_gender %></li>
-                  <li class="list-group-item"><strong>Age:</strong> <%= @adopt_pet.pet.age %></li>
+                  <li class="list-group-item"><strong>Age:</strong> <%= @adopt_pet.pet.age %> <%= @adopt_pet.pet.age_unit %></li>
                 <li class="list-group-item"><strong>Vaccination Status:</strong> 
                   <span class="badge <%= @adopt_pet.pet.vaccination_status ? 'bg-success' : 'bg-danger' %>">
                     <%= @adopt_pet.pet.vaccination_status ? "Vaccinated" : "Not Vaccinated" %>

@@ -36,13 +36,13 @@
               <td><strong><%= @pets.offset_value + i + 1 %></strong></td>
               <td class="searchable"><%= pet.category.category_name if pet.category %></td>
               <td class="searchable"><%= pet.breed.breed_name if pet.breed %></td>
-              <td><%= pet.age %></td>
+              <td><%= pet.age %>   <%= pet.age_unit %></td>
               <td><%= pet.gender %></td>
               <td><%= pet.status %></td>
               <td>
                 <!-- View Icon -->
                 <%= link_to admin_pet_path(pet), class: "text-success me-3", title: "View Pet" do %>
-                  <i class="bi bi-eye"></i>
+                  <i class="fas fa-eye text-primary"></i>
                 <% end %>
 
                 <!-- Edit Icon -->

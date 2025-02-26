@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_11_051123) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_26_115843) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -85,20 +85,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_11_051123) do
   end
 
   create_table "pets", force: :cascade do |t|
-    t.integer "age", default: 0
+    t.integer "age"
     t.integer "gender", null: false
-    t.string "temperament", default: "Unknown"
+    t.string "temperament"
     t.boolean "vaccination_status", default: false
     t.text "medical_history"
     t.text "recommended_food"
     t.text "common_health_issues"
-    t.integer "status", default: 0
+    t.integer "status"
     t.string "pet_image_url"
     t.integer "breed_id", null: false
     t.integer "category_id", null: false
     t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "age_unit"
     t.index ["breed_id"], name: "index_pets_on_breed_id"
     t.index ["category_id"], name: "index_pets_on_category_id"
   end
