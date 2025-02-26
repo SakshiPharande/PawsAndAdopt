@@ -16,7 +16,7 @@
                 <div class="carousel-inner">
                   <% @donate_pet.pet.pet_images.each_with_index do |image, index| %>
                     <div class="carousel-item <%= 'active' if index == 0 %>">
-                      <%= image_tag image, class: "d-block w-100 rounded", style: "width: 300px; height: 500px; object-fit: cover; border: 3px solid rgb(105, 108, 255);" %>                    
+                      <%= image_tag image, class: "d-block w-100 mt-5 rounded", style: "width: 300px; height: 550px; object-fit: cover; border: 3px solid rgb(105, 108, 255);" %>                    
                     </div>
                   <% end %>
                 </div>
@@ -41,17 +41,25 @@
 
               <ul class="list-group list-group-flush">
                 <!-- Donation Info -->
-                <li class="list-group-item"><strong>Donation ID:</strong> <%= @donate_pet.id %></li>
                 <li class="list-group-item"><strong>Expected Donation Date:</strong> <%= @donate_pet.expected_donate_date.strftime("%d-%m-%Y") if @donate_pet.expected_donate_date %></li>
                 <li class="list-group-item"><strong>Actual Donation Date:</strong> <%= @donate_pet.actual_donate_date.strftime("%d-%m-%Y") if @donate_pet.actual_donate_date %></li>
                 
                 <!-- Pet Details -->
                 <li class="list-group-item"><strong>Gender:</strong> <%= @donate_pet.pet_gender %></li>
-                
+                <li class="list-group-item"><strong>Age:</strong> <%= @donate_pet.pet.age %></li>
+                <li class="list-group-item"><strong>Vaccination Status:</strong> 
+                  <span class="badge <%= @donate_pet.pet.vaccination_status ? 'bg-success' : 'bg-danger' %>">
+                    <%= @donate_pet.pet.vaccination_status ? "Vaccinated" : "Not Vaccinated" %>
+                  </span>
+                </li>
+                <li class="list-group-item"><strong>Medical History:</strong> <%= @donate_pet.pet.medical_history.presence || "No records" %></li>
+                <li class="list-group-item"><strong>Recommended Food:</strong> <%= @donate_pet.pet.recommended_food.presence || "Not specified" %></li>
+                <li class="list-group-item"><strong>Common Health Issues:</strong> <%= @donate_pet.pet.common_health_issues.presence || "No issues reported" %></li>
+
                 <!-- Status with Color Coding -->
                 <% status_class = @donate_pet.pending? ? 'badge bg-warning' : (@donate_pet.accepted? ? 'badge bg-success' : 'badge bg-danger') %>
                 <li class="list-group-item">
-                  <strong>Status:</strong> 
+                  <strong>Request status:</strong> 
                   <span class="<%= status_class %> px-3 py-2"><%= @donate_pet.status.capitalize %></span>
                 </li>
               </ul>
@@ -59,7 +67,7 @@
               <hr>
 
               <!-- User Details -->
-              <h5 class="text-primary mb-3">User Details</h5>
+              <h5 class="text-primary mb-3 text-center">User Details</h5>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item"><strong>Name:</strong> <%= @donate_pet.user.first_name %> <%= @donate_pet.user.last_name %></li>
                 <li class="list-group-item"><strong>Email:</strong> <%= @donate_pet.user.email %></li>
