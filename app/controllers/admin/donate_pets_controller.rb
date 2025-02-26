@@ -10,45 +10,66 @@ class Admin::DonatePetsController < ApplicationController
   end
 
   def update
-    @donate_pet = DonatePet.find(params[:id])
+    @donate_pet = DonatePet.find(params[:id])  # Ensure @donate_pet is set
     @donate_pet_index = params[:index].to_i if params[:index].present?
-    update_success = false
 
-    if params[:status].present? && DonatePet.statuses.keys.include?(params[:status])
-      update_success = @donate_pet.update(status: params[:status])
-    elsif params[:donate_pet].present? && params[:donate_pet][:actual_donate_date].present?
-      update_success = @donate_pet.update(actual_donate_date: params[:donate_pet][:actual_donate_date])
-    end
-
-    respond_to do |format|
-      if update_success
-        # Ensure Turbo Stream is used to replace the row correctly
-        format.html { redirect_to admin_donate_pets_path, notice: "Donation request updated successfully." }
-        format.turbo_stream
-      else
-        format.html { redirect_to admin_donate_pets_path, alert: "Failed to update donation request." }
-
-        format.turbo_stream do
-          # Ensure Turbo Stream replaces the correct row using its ID
-          render turbo_stream: turbo_stream.replace("donate_pet_#{@donate_pet.id}",
-            partial: "admin/donate_pets/donate_pet", formats: :html,
-            locals: { donate_pet: @donate_pet, index: @donate_pet_index }
-          )
-        end
-      end
+    if params[:donate_pet][:status].present? && DonatePet.statuses.keys.include?(params[:donate_pet][:status])
+      update_donate_pet_status
+    elsif params[:donate_pet]
+      update_donate_pet_date
+    else
+      flash[:error] = "Invalid update request."
+      redirect_to admin_donate_pets_path
     end
   end
 
-
-
-
   private
 
+
+  # Method to update actual donation date
+  def update_donate_pet_date
+    if @donate_pet.update(donate_pet_params)
+      @index = @donate_pet.id
+      respond_to do |format|
+        format.html { redirect_to admin_donate_pets_path, notice: "donation date updated successfully." }
+        format.turbo_stream
+      end
+    else
+      flash[:error] = "Failed to update donation date."
+      redirect_to admin_donate_pets_path
+    end
+  end
+
+# Method to update pet status
+def update_donate_pet_status
+  previous_status = @donate_pet.status  # Store previous status
+  if previous_status != params[:donate_pet][:status] # Ensure status is changing
+    if @donate_pet.update(donate_pet_params)
+      DonatePetMailer.donate_status_update_email(@donate_pet, previous_status).deliver_now  # Send email with old and new status
+      respond_to do |format|
+        format.html { redirect_to admin_donate_pets_path, notice: "Donate request status updated to #{params[:donate_pet][:status]} successfully." }
+        format.turbo_stream
+      end
+    else
+      flash[:error] = "Status update failed."
+      redirect_to admin_donate_pets_path
+    end
+  else
+    flash[:notice] = "The status is already #{params[:donate_pet][:status].capitalize}."
+    redirect_to admin_donate_pets_path
+  end
+end
+
+
   def set_donate_pet
-    @donate_pet = DonatePet.find_by(id: params[:id]) # Use find_by to avoid exception
+    @donate_pet = DonatePet.find_by(id: params[:id])
     unless @donate_pet
       flash[:error] = "Donation request not found."
       redirect_to admin_donate_pets_path
     end
+  end
+
+  def donate_pet_params
+    params.require(:donate_pet).permit(:actual_donate_date, :status)
   end
 end
