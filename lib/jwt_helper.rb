@@ -3,22 +3,43 @@
 module JwtHelper
   extend ActiveSupport::Concern
 
- # Secret key from .env
- JWT_SECRET = ENV["JWT_SECRET_KEY"]
+  # Secret key from .env
+  JWT_SECRET = ENV["JWT_SECRET_KEY"]
 
- # Encode JWT token with expiration
- def encode_token(payload)
-   payload[:exp] = 24.hours.from_now.to_i
-   JWT.encode(payload, JWT_SECRET, "HS256")
- end
+  # Ensure ENV keys are read properly with newlines
+  private_key_content = ENV["RSA_PRIVATE_KEY"]&.gsub("\\n", "\n")
+  public_key_content = ENV["RSA_PUBLIC_KEY"]&.gsub("\\n", "\n")
 
- # Decode JWT token
- def decode_token(token)
-   begin
-     decoded = JWT.decode(token, JWT_SECRET, true, algorithm: "HS256")[0]
-     HashWithIndifferentAccess.new(decoded)
-   rescue JWT::DecodeError
-     nil
-   end
- end
+  RSA_PRIVATE = OpenSSL::PKey::RSA.new(private_key_content) rescue nil
+  RSA_PUBLIC = OpenSSL::PKey::RSA.new(public_key_content) rescue nil
+
+  # Encode JWT token with expiration using RSA256
+  def encode_token(payload)
+    payload[:exp] = 24.hours.from_now.to_i
+    payload[:hash] = Digest::SHA256.hexdigest(payload.to_json)
+    JWT.encode(payload, RSA_PRIVATE, "RS256")
+  end
+
+  # Decode JWT token with signature verification using RSA256
+  def decode_token(token)
+    begin
+      decoded = JWT.decode(token, RSA_PUBLIC, true, { algorithm: "RS256" })[0]
+
+      # Verify hash integrity
+      expected_hash = Digest::SHA256.hexdigest(decoded.except("hash").to_json)
+      if decoded["hash"] != expected_hash
+       render json: { error: "Token payload tampered with!" }, status: :unauthorized
+      end
+
+      unless JWT.encode(decoded, RSA_PRIVATE, "RS256") == token
+         render json: { error: "Token signature mismatch!" }, status: :unauthorized
+      end
+
+      HashWithIndifferentAccess.new(decoded)
+    rescue JWT::VerificationError
+      render json: { error: "Invalid token signature or payload" }, status: :unauthorized
+    rescue JWT::DecodeError => e
+      render json: { error: "JWT Decode Error: #{e.message}" }, status: :unauthorized
+    end
+  end
 end
