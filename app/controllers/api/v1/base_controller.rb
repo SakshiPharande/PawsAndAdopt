@@ -7,14 +7,13 @@ class Api::V1::BaseController < ActionController::API
 
 
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
-  rescue_from StandardError, with: :internal_server_error
+  # rescue_from StandardError, with: :internal_server_error
 
   private
 
   def authenticate_user
     token = request.headers["Authorization"]&.split(" ")&.last
     decoded = decode_token(token)
-
     unless decoded && (@current_user = User.find_by(id: decoded[:user_id]))
       render json: { error: "Unauthorized: Please login first" }, status: :unauthorized and return
     end

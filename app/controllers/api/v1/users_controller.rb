@@ -1,5 +1,7 @@
 class Api::V1::UsersController < Api::V1::BaseController
   # GET /api/v1/users/profile
+  skip_before_action :authenticate_user, only: [ :create ]
+
   def show
     render json: @current_user.as_json(methods: [ :profile_image_url ]), status: :ok
   end
