@@ -11,6 +11,16 @@ class Pet < ApplicationRecord
   validates :category_id, :breed_id, :age, :age_unit, :gender, :temperament, :status, presence: true
   validates :vaccination_status, inclusion: { in: [ true, false ] }
 
+  # Whitelist searchable attributes for Ransack
+  def self.ransackable_attributes(auth_object = nil)
+    [ "age", "age_unit", "breed_id", "category_id", "gender", "status", "temperament", "vaccination_status" ]
+  end
+
+  # Whitelist associations for Ransack (optional, but recommended)
+  def self.ransackable_associations(auth_object = nil)
+    [ "category", "breed" ]
+  end
+
   # Method to return multiple image URLs
   def pet_images_urls
     pet_images.map { |image| Rails.application.routes.url_helpers.rails_blob_url(image, only_path: true) }

@@ -70,3 +70,4 @@ gem "will_paginate-bootstrap5"
 
 gem "byebug", "~> 11.1"
 gem "rack-cors"
+gem "ransack"

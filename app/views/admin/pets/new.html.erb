@@ -11,11 +11,16 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <%= f.label :category_id, "Category", class: "form-label" %>
-              <%= f.collection_select :category_id, @categories, :id, :category_name, { prompt: "Select Category" }, class: "form-select", required: true %>
+              <%= f.collection_select :category_id, @categories, :id, :category_name, 
+                { prompt: "Select Category" }, 
+                { class: "form-select", id: "category-select" } %>
             </div>
+
             <div class="col-md-6">
               <%= f.label :breed_id, "Breed", class: "form-label" %>
-              <%= f.collection_select :breed_id, @breeds, :id, :breed_name, { prompt: "Select Breed" }, class: "form-select", required: true%>
+              <%= f.collection_select :breed_id, [], :id, :breed_name, 
+                { prompt: "Select Breed" }, 
+                { class: "form-select", id: "breed-select", disabled: true } %>
             </div>
           </div>
           
@@ -149,4 +154,8 @@
     element.remove();
     updateFileInput();
   }
+
+
+  
+
 </script>

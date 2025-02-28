@@ -1,6 +1,8 @@
 class Admin::PetsController < ApplicationController
   def index
-    @pets = Pet.kept.includes(:category, :breed).paginate(page: params[:page], per_page: 5)
+    load_categories_and_breeds
+    @q = Pet.kept.includes(:category, :breed).ransack(params[:q])
+    @pets = @q.result.paginate(page: params[:page], per_page: 5)
   end
 
   def show
@@ -53,6 +55,16 @@ class Admin::PetsController < ApplicationController
       render :edit
     end
   end
+
+  def get_breeds
+    @breeds = Breed.kept.where(category_id: params[:category_id])
+    if @breeds.present?
+      render json: @breeds, status: :ok
+    else
+      render json: { error: "No breeds found for the selected category" }, status: :not_found
+    end
+  end
+
 
   def discard
     @pet = Pet.find(params[:id])

@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       member do
         patch :discard
       end
+      collection do
+        get :get_breeds
+      end
     end
     resources :donate_pets, only: [ :index, :show, :update ] do
     end
