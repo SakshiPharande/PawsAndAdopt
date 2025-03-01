@@ -8,14 +8,24 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def create
     @user = User.new(user_params)
-    if params[:profile_image].present?
-      @user.profile_image.attach(params[:profile_image])
+
+    # Attach profile image if provided
+    if params[:user][:profile_image].present?
+      @user.profile_image.attach(params[:user][:profile_image])
     end
 
     if @user.save
-      render json: { status: "SUCCESS", message: "Account created successfully", data: @user.as_json(methods: [ :profile_image_url ]) }, status: :created
+      render json: {
+        status: "SUCCESS",
+        message: "Account created successfully",
+        data: @user.as_json(methods: [ :profile_image_url ])
+      }, status: :created
     else
-      render json: { status: "ERROR", message: "Failed to create Account", errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: {
+        status: "ERROR",
+        message: "Failed to create Account",
+        errors: @user.errors.full_messages
+      }, status: :unprocessable_entity
     end
   end
 
