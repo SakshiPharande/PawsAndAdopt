@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       resources :users, only: [ :show, :create, :update, :destroy ]
       resources :categories, only: [ :index ]
       resources :breeds, only: [ :index ]
-      resources :pets, only: [ :index ]
+      resources :pets, only: [ :index, :show ]
       resources :donate_pets, only: [ :index ]
       resources :adopt_pets, only: [ :index ]
     end
