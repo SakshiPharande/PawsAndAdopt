@@ -57,7 +57,14 @@ Rails.application.routes.draw do
       resources :categories, only: [ :index ]
       resources :breeds, only: [ :index ]
       resources :pets, only: [ :index, :show ]
-      resources :donate_pets, only: [ :index ]
+      resources :donate_pets, only: [ :create ] do
+        collection do
+          get :show_donations # Custom route to show all donation requests with images
+          post :create_pet       # Step 1: Save pet details first
+          post :create_donation  # Step 2: Save donation request
+          delete :cancel_donation  # Cancel donation (removes pet)
+        end
+      end
       resources :adopt_pets, only: [ :index ]
     end
   end
