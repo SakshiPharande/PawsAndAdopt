@@ -69,6 +69,7 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
       phone_no: donation.phone_no,
       status: donation.status,
       expected_donate_date: donation.expected_donate_date,
+      actual_donate_date: donation.actual_donate_date,
       pet: {
         id: donation.pet.id,
         age: donation.pet.age,
