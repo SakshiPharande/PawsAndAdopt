@@ -18,7 +18,7 @@ class User < ApplicationRecord
   # Method to return profile image URL (with default)
   def profile_image_url
     if profile_image.attached?
-      Rails.application.routes.url_helpers.rails_blob_url(profile_image, only_path: true)
+      Rails.application.routes.url_helpers.rails_blob_url(profile_image, only_path: false)
     else
       default_image =
         case role
