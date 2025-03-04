@@ -14,7 +14,7 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
     render json: { success: false, error: e.message }, status: :internal_server_error
   end
 
-  # Step 1: Create pet entry (Temporary - only saved if step 2 is completed)
+  # Step 1: Create a temporary pet entry (only saved if donation is completed)
   def create_pet
     pet = Pet.new(pet_params)
 
@@ -27,21 +27,24 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
 
   # Step 2: Create donation entry & link the pet (Only if this step is completed, pet remains in DB)
   def create_donation
+    @pet = Pet.find_by(id: params[:pet_id])  # Ensure @pet is set
+
+    return render json: { success: false, message: "Pet not found" }, status: :not_found unless @pet
+
     donate_pet = current_user.donate_pets.new(donate_pet_params.merge(pet_id: @pet.id))
 
     if donate_pet.save
       render json: { success: true, message: "Donation request submitted successfully!", data: donation_data(donate_pet) }, status: :created
     else
-      # Rollback pet record if donation fails
-      @pet.destroy
+      @pet.destroy if @pet.donate_pet.nil?
       render json: { success: false, errors: donate_pet.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+
   # Handle user canceling process
   def cancel_donation
-    pet = Pet.find_by(id: params[:pet_id])
-    if pet&.destroy
+    if @pet&.destroy
       render json: { success: true, message: "Donation process canceled. Pet record removed." }, status: :ok
     else
       render json: { success: false, message: "Failed to cancel donation or pet not found." }, status: :not_found
@@ -49,17 +52,18 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
   end
 
   private
+
   def set_pet
     @pet = Pet.find_by(id: params[:pet_id])
     render json: { success: false, message: "Pet not found" }, status: :not_found unless @pet
   end
 
   def pet_params
-    params.require(:pet).permit(:age, :gender, :temperament, :vaccination_status, :medical_history, :recommended_food, :common_health_issues, :status, :breed_id, :category_id)
+    params.require(:pet).permit(:age, :age_unit, :gender, :temperament, :vaccination_status, :medical_history, :recommended_food, :common_health_issues, :status, :breed_id, :category_id)
   end
 
   def donate_pet_params
-    params.require(:donate_pet).permit(:address, :phone_no, :status, :expected_donate_date)
+    params.require(:donate_pet).permit(:address, :phone_no, :status, :expected_donate_date, :actual_donate_date)
   end
 
   def donation_data(donation)
@@ -76,6 +80,10 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
         gender: donation.pet.gender.capitalize,
         temperament: donation.pet.temperament,
         vaccination_status: donation.pet.vaccination_status,
+        medical_history: donation.pet.medical_history,
+        recommended_food: donation.pet.recommended_food,
+        common_health_issues: donation.pet.common_health_issues,
+        status: donation.pet.status,
         pet_images: donation.pet.pet_images_urls, # Fetching Active Storage images
         breed_name: donation.pet.breed_name,
         category_name: donation.pet.category_name

@@ -65,7 +65,7 @@ Rails.application.routes.draw do
           delete :cancel_donation  # Cancel donation (removes pet)
         end
       end
-      resources :adopt_pets, only: [ :index ] do
+      resources :adopt_pets, only: [ :create ] do
         collection do
           get :show_adoptions
         end
