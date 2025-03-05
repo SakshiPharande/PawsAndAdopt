@@ -37,7 +37,8 @@ gem "bootsnap", require: false
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
+  gem "factory_bot_rails"
+  gem "rspec-rails"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
 
@@ -55,6 +56,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "shoulda-matchers", "~> 6.0"
+  gem "simplecov", require: false
 end
 
 gem "jsbundling-rails", "~> 1.3"
@@ -71,3 +74,4 @@ gem "will_paginate-bootstrap5"
 gem "byebug", "~> 11.1"
 gem "rack-cors"
 gem "ransack"
+gem "faker"

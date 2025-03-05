@@ -3,8 +3,6 @@ class Admin::BreedsController < ApplicationController
     @breeds = Breed.kept.includes(:category).paginate(page: params[:page], per_page: 5)
   end
 
-
-
   def new
     @breed = Breed.new
     @categories = Category.kept
@@ -18,10 +16,9 @@ class Admin::BreedsController < ApplicationController
     else
       @categories = Category.kept
       flash.now[:alert] = "Failed to add breed. Please check the inputs."
-      render :new
+      render :new, status: :unprocessable_entity  # Explicitly set 422 status
     end
   end
-
 
   def edit
     @breed = Breed.find(params[:id])

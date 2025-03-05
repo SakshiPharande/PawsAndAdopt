@@ -3,10 +3,6 @@ class Admin::CategoriesController < ApplicationController
     @categories = Category.kept.paginate(page: params[:page], per_page: 5)
   end
 
-  def show
-    @category = Category.find(params[:id])
-  end
-
   def new
     @category = Category.new
   end
@@ -16,7 +12,8 @@ class Admin::CategoriesController < ApplicationController
     if @category.save
       redirect_to admin_categories_path, notice: "Category added successfully."
     else
-      render :new, alert: "Error: Category could not be added."
+      flash.now[:alert] = "Error: Category could not be added."
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -29,7 +26,8 @@ class Admin::CategoriesController < ApplicationController
     if @category.update(category_params)
       redirect_to admin_categories_path, notice: "Category updated successfully."
     else
-      render :edit, alert: "There was an issue updating the category."
+      flash.now[:alert] = "There was an issue updating the category."
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -38,7 +36,7 @@ class Admin::CategoriesController < ApplicationController
     if @category.discard
       flash[:notice] = "Category has been deleted."
     else
-      flash[:alert] = "Failed to delete user."
+      flash[:alert] = "Failed to delete category."
     end
     redirect_to admin_categories_path
   end

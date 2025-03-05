@@ -1,13 +1,13 @@
 class Admin::PetsController < ApplicationController
+  before_action :set_pet, only: [ :show, :edit, :update, :discard ]
+
   def index
     load_categories_and_breeds
     @q = Pet.kept.includes(:category, :breed).ransack(params[:q])
     @pets = @q.result.paginate(page: params[:page], per_page: 5)
   end
 
-  def show
-    @pet = Pet.includes(:category, :breed).find_by(id: params[:id])
-  end
+  def show; end
 
   def new
     @pet = Pet.new
@@ -16,43 +16,29 @@ class Admin::PetsController < ApplicationController
 
   def create
     @pet = Pet.new(pet_params)
-
     if @pet.save
-      Rails.logger.debug "Uploaded images: #{params[:pet][:pet_images].inspect}"
       attach_images(@pet)
       redirect_to admin_pets_path, notice: "Pet successfully added."
     else
       load_categories_and_breeds
       flash.now[:alert] = @pet.errors.full_messages.to_sentence
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @pet = Pet.find(params[:id])
     load_categories_and_breeds
   end
 
   def update
-    @pet = Pet.find(params[:id])
-    # Remove images if any are marked for deletion
-    if params[:pet][:removed_images].present?
-      params[:pet][:removed_images].each do |image_id|
-        @pet.pet_images.find(image_id).purge
-      end
-    end
+    remove_images if params[:pet][:removed_images].present?
+    attach_images(@pet) if params[:pet][:pet_images].present?
 
-    # Preserve existing images and add new images only if provided
-    if params[:pet][:pet_images].present?
-      params[:pet][:pet_images].each do |image|
-        @pet.pet_images.attach(image) # Attach only new images
-      end
-    end
-
-    if @pet.update(pet_params.except(:pet_images)) # Exclude pet_images from update
+    if @pet.update(pet_params.except(:pet_images))
       redirect_to admin_pets_path, notice: "Pet updated successfully!"
     else
-      render :edit
+      flash.now[:alert] = @pet.errors.full_messages.to_sentence
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -65,21 +51,20 @@ class Admin::PetsController < ApplicationController
     end
   end
 
-
   def discard
-    @pet = Pet.find(params[:id])
     if @pet.discard
-      flash[:notice] = "pet has been deleted."
+      redirect_to admin_pets_path, notice: "Pet has been deleted."
     else
-      flash[:alert] = "Failed to delete pet."
+      redirect_to admin_pets_path, alert: "Failed to delete pet."
     end
-    redirect_to admin_pets_path
   end
 
   private
 
   def set_pet
     @pet = Pet.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to admin_pets_path, alert: "Pet not found."
   end
 
   def load_categories_and_breeds
@@ -99,5 +84,11 @@ class Admin::PetsController < ApplicationController
   def attach_images(pet)
     return unless params[:pet][:pet_images].present?
     pet.pet_images.attach(params[:pet][:pet_images])
+  end
+
+  def remove_images
+    params[:pet][:removed_images].each do |image_id|
+      @pet.pet_images.find(image_id).purge
+    end
   end
 end
