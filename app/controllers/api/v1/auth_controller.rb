@@ -25,7 +25,7 @@ class Api::V1::AuthController < ApplicationController
     end
 
     if user&.valid_password?(params[:password])
-      token = encode_token({ user_id: user.id })
+      token = encode_token({ user_id: user.id }) # encoding token with user_id
       logger.info("User logged in successfully: #{user.email}")
       render json: {
         token: token,

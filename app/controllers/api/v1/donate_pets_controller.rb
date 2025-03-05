@@ -8,7 +8,7 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
         data: donate_pets.map { |donation| donation_data(donation) }
       }, status: :ok
     else
-      render json: { success: false, message: "No donated pet requests found." }, status: :not_found
+      render json: { success: false, message: "No donated pet requests found." }, status: :ok
     end
   rescue StandardError => e
     render json: { success: false, error: e.message }, status: :internal_server_error
