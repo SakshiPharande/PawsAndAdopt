@@ -6,8 +6,14 @@ class Admin::DonatePetsController < ApplicationController
   end
 
   def show
-    @donate_pet = DonatePet.includes(user: {}, pet: { breed: :category }).find(params[:id])
+    @donate_pet = DonatePet.includes(user: {}, pet: { breed: :category }).find_by(id: params[:id])
+
+    if @donate_pet.nil?
+      flash[:error] = "Donation request not found."
+      redirect_to admin_donate_pets_path
+    end
   end
+
 
   def update
     @donate_pet = DonatePet.find(params[:id])  # Ensure @donate_pet is set
@@ -31,7 +37,7 @@ class Admin::DonatePetsController < ApplicationController
     if @donate_pet.update(donate_pet_params)
       @index = @donate_pet.id
       respond_to do |format|
-        format.html { redirect_to admin_donate_pets_path, notice: "donation date updated successfully." }
+        format.html { redirect_to admin_donate_pets_path, notice: "Donation date updated successfully." }
         format.turbo_stream
       end
     else
