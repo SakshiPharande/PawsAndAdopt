@@ -86,4 +86,9 @@ RSpec.configure do |config|
       with.library :rails   # for shoulda matchers
     end
   end
+  RSpec.configure do |config|
+    config.before(:each) do
+      Rails.application.routes.default_url_options[:host] = "http://localhost:3000"  # showing images
+    end
+  end
 end

@@ -16,18 +16,26 @@ class User < ApplicationRecord
 
 
   # Method to return profile image URL (with default)
+  # def profile_image_url
+  #   if profile_image.attached?
+  #     Rails.application.routes.url_helpers.rails_blob_url(profile_image, only_path: false)
+  #   else
+  #     default_image =
+  #       case role
+  #       when "admin"
+  #         "default-admin-profile-pic.jpg"
+  #       else
+  #         "default-user-profile-pic.png"
+  #       end
+
+  #     ActionController::Base.helpers.asset_path(default_image)
+  #   end
+  # end
   def profile_image_url
     if profile_image.attached?
-      Rails.application.routes.url_helpers.rails_blob_url(profile_image, only_path: false)
+      Rails.application.routes.url_helpers.rails_blob_url(profile_image, host: "http://localhost:3000")
     else
-      default_image =
-        case role
-        when "admin"
-          "default-admin-profile-pic.jpg"
-        else
-          "default-user-profile-pic.png"
-        end
-
+      default_image = role == "admin" ? "default-admin-profile-pic.jpg" : "default-user-profile-pic.png"
       ActionController::Base.helpers.asset_path(default_image)
     end
   end
