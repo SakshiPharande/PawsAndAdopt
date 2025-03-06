@@ -59,7 +59,11 @@ class Api::V1::AdoptPetsController < Api::V1::BaseController
           vaccination_status: adoption.pet.vaccination_status,
           pet_images: adoption.pet.pet_images_urls,
           breed_name: adoption.pet.breed_name,
-          category_name: adoption.pet.category_name
+          category_name: adoption.pet.category_name,
+          medical_history: adoption.pet.medical_history,
+          recommended_food: adoption.pet.recommended_food,
+          common_health_issues: adoption.pet.common_health_issues,
+          status: adoption.pet.status
         }
       }
     end

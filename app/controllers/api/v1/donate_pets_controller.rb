@@ -59,7 +59,12 @@ class Api::V1::DonatePetsController < Api::V1::BaseController
   end
 
   def pet_params
-    params.require(:pet).permit(:age, :age_unit, :gender, :temperament, :vaccination_status, :medical_history, :recommended_food, :common_health_issues, :status, :breed_id, :category_id)
+    params.require(:pet).permit(:age, :age_unit, :gender, :temperament, :vaccination_status,
+                                :medical_history, :recommended_food, :common_health_issues,
+                                :status, :breed_id, :category_id, pet_images: []).tap do |pet_params|
+      pet_params[:gender] = pet_params[:gender].to_i if pet_params[:gender].present?
+      pet_params[:status] = pet_params[:status].to_i if pet_params[:status].present?
+    end
   end
 
   def donate_pet_params
