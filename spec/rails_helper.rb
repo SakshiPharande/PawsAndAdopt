@@ -91,4 +91,9 @@ RSpec.configure do |config|
       Rails.application.routes.default_url_options[:host] = "http://localhost:3000"  # showing images
     end
   end
+  RSpec.configure do |config|
+    config.after(:each) do
+      ActiveStorage::Blob.all.each(&:purge_later) # to clear active storage after each test cases
+    end
+  end
 end
