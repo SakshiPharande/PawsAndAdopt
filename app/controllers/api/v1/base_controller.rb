@@ -11,10 +11,19 @@ class Api::V1::BaseController < ActionController::API
 
   private
 
+  # def authenticate_user
+  #   token = request.headers["Authorization"]&.split(" ")&.last
+  #   decoded = decode_token(token)
+  #   unless decoded && (@current_user = User.find_by(id: decoded[:user_id]))
+  #     render json: { error: "Unauthorized: Please login first" }, status: :unauthorized and return
+  #   end
+  # end
+
   def authenticate_user
     token = request.headers["Authorization"]&.split(" ")&.last
-    decoded = decode_token(token)
-    unless decoded && (@current_user = User.find_by(id: decoded[:user_id]))
+    decoded = JwtHelper.decode_token(token)
+
+    unless decoded.present? && decoded["user_id"].present? && (@current_user = User.find_by(id: decoded["user_id"]))
       render json: { error: "Unauthorized: Please login first" }, status: :unauthorized and return
     end
   end

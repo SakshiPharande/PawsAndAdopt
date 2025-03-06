@@ -21,25 +21,45 @@ module JwtHelper
   end
 
   # Decode JWT token with signature verification using RSA256
+  # def decode_token(token)
+  #   begin
+  #     decoded = JWT.decode(token, RSA_PUBLIC, true, { algorithm: "RS256" })[0]
+
+  #     # Verify hash integrity
+  #     expected_hash = Digest::SHA256.hexdigest(decoded.except("hash").to_json)
+  #     if decoded["hash"] != expected_hash
+  #      render json: { error: "Token payload tampered with!" }, status: :unauthorized
+  #     end
+
+  #     unless JWT.encode(decoded, RSA_PRIVATE, "RS256") == token
+  #        render json: { error: "Token signature mismatch!" }, status: :unauthorized
+  #     end
+
+  #     HashWithIndifferentAccess.new(decoded)
+  #   rescue JWT::VerificationError
+  #     render json: { error: "Invalid token signature or payload" }, status: :unauthorized
+  #   rescue JWT::DecodeError => e
+  #     render json: { error: "JWT Decode Error: #{e.message}" }, status: :unauthorized
+  #   end
+  # end
+
   def decode_token(token)
     begin
       decoded = JWT.decode(token, RSA_PUBLIC, true, { algorithm: "RS256" })[0]
 
       # Verify hash integrity
       expected_hash = Digest::SHA256.hexdigest(decoded.except("hash").to_json)
-      if decoded["hash"] != expected_hash
-       render json: { error: "Token payload tampered with!" }, status: :unauthorized
-      end
+      return nil if decoded["hash"] != expected_hash  # Return nil instead of rendering JSON
 
-      unless JWT.encode(decoded, RSA_PRIVATE, "RS256") == token
-         render json: { error: "Token signature mismatch!" }, status: :unauthorized
-      end
+      return nil unless JWT.encode(decoded, RSA_PRIVATE, "RS256") == token  # Signature mismatch
 
       HashWithIndifferentAccess.new(decoded)
-    rescue JWT::VerificationError
-      render json: { error: "Invalid token signature or payload" }, status: :unauthorized
-    rescue JWT::DecodeError => e
-      render json: { error: "JWT Decode Error: #{e.message}" }, status: :unauthorized
+    rescue JWT::DecodeError, JWT::VerificationError => e
+      nil  # Return nil instead of rendering JSON (fix for tests)
     end
   end
+
+
+   # Expose methods so they can be called as JwtHelper.encode_token(...)
+   module_function :encode_token, :decode_token
 end
