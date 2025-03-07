@@ -29,7 +29,7 @@ class Api::V1::AuthController < ApplicationController
       logger.info("User logged in successfully: #{user.email}")
       render json: {
         token: token,
-        user: user.as_json(only: [ :id, :email, :first_name, :last_name ]).merge(
+        user: user.as_json(only: [ :id, :email, :first_name, :last_name, :phone_no ]).merge(
           profile_image_url: user.profile_image_url # Include profile pic URL
         )
       }, status: :ok

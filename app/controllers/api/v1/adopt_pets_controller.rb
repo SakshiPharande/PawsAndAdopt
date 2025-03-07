@@ -10,7 +10,7 @@ class Api::V1::AdoptPetsController < Api::V1::BaseController
           data: adopt_pets.map { |adoption| adoption_data(adoption) }
         }, status: :ok
       else
-        render json: { success: false, message: "No adoption requests found." }, status: :not_found
+        render json: { success: false, message: "No adoption requests found." }, status: :ok
       end
     end
 
