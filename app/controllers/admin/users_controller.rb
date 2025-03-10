@@ -1,4 +1,4 @@
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < Admin::BaseController
   def index
     @users = User.kept.where(role: "user").paginate(page: params[:page], per_page: 5)
   end
@@ -20,7 +20,7 @@ class Admin::UsersController < ApplicationController
 
 private
 
-def user_params
-params.require(:user).permit(:first_name, :last_name, :email, :phone_no, :password, :role, :profile_image)
-end
+  def user_params
+    params.require(:user).permit(:first_name, :last_name, :email, :phone_no, :password, :role, :profile_image)
+  end
 end

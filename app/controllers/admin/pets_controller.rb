@@ -1,4 +1,4 @@
-class Admin::PetsController < ApplicationController
+class Admin::PetsController < Admin::BaseController
   before_action :set_pet, only: [ :show, :edit, :update, :discard ]
 
   def index

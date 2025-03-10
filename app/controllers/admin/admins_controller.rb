@@ -1,6 +1,4 @@
-class Admin::AdminsController < ApplicationController
-  before_action :authorize_admin # Ensure only admins can edit their profiles
-
+class Admin::AdminsController < Admin::BaseController
   def show
     @admin = current_user
   end
@@ -42,11 +40,5 @@ class Admin::AdminsController < ApplicationController
 
   def admin_params
     params.require(:user).permit(:first_name, :last_name, :email, :phone_no, :profile_image)
-  end
-
-  def authorize_admin
-    unless current_user.admin?
-      redirect_to root_path, alert: "You are not authorized to perform this action."
-    end
   end
 end

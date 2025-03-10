@@ -1,4 +1,4 @@
-class Admin::DonatePetsController < ApplicationController
+class Admin::DonatePetsController < Admin::BaseController
   before_action :set_donate_pet, only: [ :update ] # Ensure this is called before update
 
   def index

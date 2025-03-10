@@ -5,39 +5,31 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
 
   # Use Devise authentication for admin  only
-  before_action :authenticate_user!, unless: :api_request?
-  # before_action :authenticate_admin!, if: :admin_request?  # Ensure only admins use Devise auth
+  before_action :authenticate_user!
 
-
-  helper_method :api_request?
-
-  rescue_from Devise::MissingWarden, with: :unauthorized_access
-  rescue_from ActionController::InvalidAuthenticityToken, with: :unauthorized_access
+  # rescue_from Devise::MissingWarden, with: :unauthorized_access
+  # rescue_from ActionController::InvalidAuthenticityToken, with: :unauthorized_access
 
   def after_sign_in_path_for(resource)
     if resource.admin?
       admin_dashboard_path
-    elsif resource.user?
-      api_v1_dashboard_path
     else
-      root_path
+      sign_out resource  # Log out non-admins immediately
+      flash[:alert] = "Unauthorized access!"
+      new_user_session_path
     end
   end
 
+  rescue_from CanCan::AccessDenied do |exception|
+    render json: { error: "Access denied" }, status: :forbidden
+  end
 
   private
+
 
   def skip_csrf_for_api_requests
     if request.format.json? || request.path.start_with?("/api/")
       self.class.skip_forgery_protection
     end
   end
-
-  def api_request?
-    request.format.json? || request.path.start_with?("/api/")
-  end
-  # chek admin requets
-  # def admin_request?
-  #   request.path.start_with?("/admin")
-  # end
 end

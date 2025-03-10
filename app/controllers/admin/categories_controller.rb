@@ -1,4 +1,4 @@
-class Admin::CategoriesController < ApplicationController
+class Admin::CategoriesController < Admin::BaseController
   def index
     @categories = Category.kept.paginate(page: params[:page], per_page: 5)
   end

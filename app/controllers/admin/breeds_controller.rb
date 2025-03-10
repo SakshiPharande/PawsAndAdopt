@@ -1,4 +1,4 @@
-class Admin::BreedsController < ApplicationController
+class Admin::BreedsController < Admin::BaseController
   def index
     @breeds = Breed.kept.includes(:category).paginate(page: params[:page], per_page: 5)
   end

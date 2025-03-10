@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   # Set root to admin dashboard
   root to: "admin/dashboards#index"
 
+  # Admin routes - Only accessible to authenticated admin users
+  authenticate :user, ->(u) { u.admin? } do
   # Admin routes (Restricted to admin users)
   namespace :admin do
     get "dashboard", to: "dashboards#index", as: "dashboard"
@@ -45,6 +47,7 @@ Rails.application.routes.draw do
       end
     end
   end
+end
 
 
 

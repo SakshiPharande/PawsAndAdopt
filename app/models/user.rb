@@ -31,6 +31,7 @@ class User < ApplicationRecord
   #     ActionController::Base.helpers.asset_path(default_image)
   #   end
   # end
+  #
 
   def profile_image_url
     if profile_image.attached?
