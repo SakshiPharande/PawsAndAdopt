@@ -4,7 +4,7 @@ class Admin::PetsController < Admin::BaseController
   def index
     load_categories_and_breeds
     @q = Pet.kept.includes(:category, :breed).ransack(params[:q])
-    @pets = @q.result.paginate(page: params[:page], per_page: 5)
+    @pets = @q.result.paginate(page: params[:page], per_page: 10)
   end
 
   def show; end

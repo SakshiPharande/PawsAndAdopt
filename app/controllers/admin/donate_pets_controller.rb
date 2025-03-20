@@ -2,7 +2,7 @@ class Admin::DonatePetsController < Admin::BaseController
   before_action :set_donate_pet, only: [ :update ] # Ensure this is called before update
 
   def index
-    @donate_pets = DonatePet.includes(user: {}, pet: { breed: :category }).all.paginate(page: params[:page], per_page: 5)
+    @donate_pets = DonatePet.includes(user: {}, pet: { breed: :category }).all.paginate(page: params[:page], per_page: 10)
   end
 
   def show
