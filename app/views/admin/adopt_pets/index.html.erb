@@ -25,7 +25,7 @@
       <tbody class="table-border-bottom-0" id="adoptPetTable">
         <% if @adopt_pets.present? %>
           <% @adopt_pets.each_with_index do |adopt_pet, i| %>
-            <%= render partial: "admin/adopt_pets/adopt_pet", locals: { adopt_pet: adopt_pet, index: i + 1 } %>
+            <%= render partial: "admin/adopt_pets/adopt_pet", locals: { adopt_pet: adopt_pet, index: @adopt_pets.offset_value + i + 1 } %>
           <% end %>
         <% else %>
           <tr>
