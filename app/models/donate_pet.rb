@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: donate_pets
+#
+#  id                   :integer          not null, primary key
+#  address              :string           not null
+#  phone_no             :string           not null
+#  status               :integer          default("pending")
+#  expected_donate_date :datetime
+#  actual_donate_date   :datetime
+#  user_id              :integer          not null
+#  pet_id               :integer          not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#
 class DonatePet < ApplicationRecord
   belongs_to :user, foreign_key: :user_id
   belongs_to :pet, foreign_key: :pet_id

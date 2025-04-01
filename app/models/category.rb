@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: categories
+#
+#  id            :integer          not null, primary key
+#  category_name :string           not null
+#  discarded_at  :datetime
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
 class Category < ApplicationRecord
   include Discard::Model
   has_many :breeds
