@@ -78,6 +78,9 @@ RSpec.configure do |config|
     config.include Devise::Test::ControllerHelpers, type: :controller # for device gem
   end
   RSpec.configure do |config|
+    config.include Devise::Test::IntegrationHelpers, type: :feature # for device gem to check admin is authenticated for feature
+  end
+  RSpec.configure do |config|
     config.include AdminAuthHelper # for admin authentication
   end
   Shoulda::Matchers.configure do |config|
