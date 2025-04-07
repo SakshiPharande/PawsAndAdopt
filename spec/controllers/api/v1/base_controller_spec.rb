@@ -16,9 +16,6 @@ RSpec.describe Api::V1::BaseController, type: :controller do
     allow(JwtHelper).to receive(:decode_token).with(invalid_token).and_return(nil)  # Ensure nil is returned
     get :index
   end
-
-
-
   #  Helper method to parse JSON responses
   def json_response
     JSON.parse(response.body)
@@ -27,7 +24,7 @@ RSpec.describe Api::V1::BaseController, type: :controller do
   describe "#authenticate_user" do
     context "when a valid token is provided" do
       before do
-        login_user
+        auth_headers(user)
         allow(JwtHelper).to receive(:decode_token).and_return({ "user_id" => user.id })
         get :index
       end
@@ -40,7 +37,7 @@ RSpec.describe Api::V1::BaseController, type: :controller do
 
     context "when an invalid token is provided" do
       before do
-        login_user(invalid_token)
+        invalid_token
         allow(JwtHelper).to receive(:decode_token).and_return(nil)
         get :index
       end
