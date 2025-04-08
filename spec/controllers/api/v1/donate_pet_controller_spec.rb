@@ -67,7 +67,8 @@ RSpec.describe Api::V1::DonatePetsController, type: :request do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_pet_params) { { pet: { age: nil } } }
+      let(:invalid_pet_params) {
+        { pet: { age: nil } } }
 
       before do
         post '/api/v1/donate_pets/create_pet', params: invalid_pet_params, headers: auth_headers(user)
