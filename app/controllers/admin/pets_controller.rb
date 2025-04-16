@@ -59,6 +59,14 @@ class Admin::PetsController < Admin::BaseController
     end
   end
 
+
+  def remove_image
+    image = ActiveStorage::Attachment.find(params[:image_id])
+    image.purge
+    render json: { success: true }
+  end
+
+
   private
 
   def set_pet

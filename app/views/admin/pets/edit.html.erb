@@ -82,10 +82,29 @@
 
 <!-- JavaScript for Image Upload, Preview & Remove -->
 <script>
-    // Avoid redeclaring the variable if it already exists
-    if (typeof uploadedFiles === "undefined") {
-      var uploadedFiles = [];
-    }  
+  if (!window.uploadedFiles) {
+    window.uploadedFiles = [];
+  }
+
+    const form = document.querySelector('form');
+    const imageList = document.getElementById("image-list");
+    const input = document.getElementById("pet-image-input");
+
+    if (form) {
+      form.addEventListener("submit", () => {
+        // Clear uploadedFiles array
+        uploadedFiles = [];
+
+        // Reset file input
+        input.value = "";
+
+        // Remove image previews
+        while (imageList.firstChild) {
+          imageList.removeChild(imageList.firstChild);
+        }
+      });
+    }
+
   function handleImageUpload(event) {
     const files = Array.from(event.target.files);
     const imageList = document.getElementById("image-list");
@@ -95,16 +114,14 @@
         uploadedFiles.push(file);
         const reader = new FileReader();
         reader.onload = function (e) {
-          const imageUrl = e.target.result;
-          
           const colDiv = document.createElement("div");
           colDiv.className = "col-md-3 mb-2";
           
           const img = document.createElement("img");
-          img.src = imageUrl;
+          img.src = e.target.result;
           img.className = "img-thumbnail";
           img.style = "width: 150px; height: 150px; object-fit: cover; cursor: pointer;";
-
+          
           const removeBtn = document.createElement("button");
           removeBtn.innerText = "Remove";
           removeBtn.className = "btn btn-danger btn-sm mt-1";
@@ -123,8 +140,10 @@
         reader.readAsDataURL(file);
       }
     });
+
     updateFileInput();
   }
+
   
   function updateFileInput() {
     const input = document.getElementById("pet-image-input");
@@ -138,14 +157,20 @@
     element.remove();
     updateFileInput();
   }
-  
+
   function removeExistingImage(imageId) {
-    fetch(`/admin/pets/remove_image/${imageId}`, { method: "DELETE" })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          document.getElementById(`existing-image-${imageId}`).remove();
-        }
-      });
+    fetch(`/admin/pets/remove_image/${imageId}`, {
+      method: "DELETE",
+      headers: {
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        const imageDiv = document.getElementById(`existing-image-${imageId}`);
+        if (imageDiv) imageDiv.remove();
+      }
+    });
   }
 </script>

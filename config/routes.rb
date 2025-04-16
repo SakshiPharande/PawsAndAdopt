@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       collection do
         get :get_breeds
       end
+        delete "remove_image/:image_id", to: "pets#remove_image", on: :collection
     end
     resources :donate_pets, only: [ :index, :show, :update ] do
     end
